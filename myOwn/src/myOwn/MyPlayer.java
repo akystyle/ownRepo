@@ -8,8 +8,8 @@ public class MyPlayer {
 	public void calculatePosition() {
 		if (x <= 1 && speedx < 0)
 			x = 1;
-		else if (x >= 260 && speedx > 0)
-			x = 260;
+		else if (x >= 300 && speedx > 0)
+			x = 300;
 		else
 			x = x + speedx;
 		
@@ -35,22 +35,22 @@ public class MyPlayer {
 
 	public void moveLeft() {
 		if (speedx > 1)
-			speedx = -1;
-		else
-			speedx -= 1;
-
-		if (speedx <= -3)
 			speedx = -3;
+		else
+			speedx -= 3;
+
+		if (speedx <= -7)
+			speedx = -7;
 	}
 
 	public void moveRight() {
 		if (speedx < 1)
-			speedx = 1;
+			speedx = 3;
 		else
-			speedx += 1;
+			speedx += 3;
 
-		if (speedx >= 5)
-			speedx = 5;
+		if (speedx >= 7)
+			speedx = 7;
 	}
 	
 	public void jump(){

@@ -14,7 +14,6 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 	MyPlayer myPlayer;
 	MyBg myBG;
 	Graphics myGraphics;
-	URL myDocURL;
 	Image myImage, myCharacter, myBGImage;
 
 	@Override
@@ -27,20 +26,11 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 		Frame myFrame = (Frame) this.getParent().getParent();
 		myFrame.setTitle("myOwn App");
 		myFrame.setLocation(200, 200);
-		try {
-			// myDocURL = new
-			// URL("file:/D:/MyDocuments/Projects/Android/Game Maker/myOwn/Repository/myOwn/");
 
-			myDocURL = new URL("resource/myCharacter.png");
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		
-		System.out.println(this.getClass().getResource("resource/myCharacter.png"));
-		myCharacter = getImage(myDocURL);
-		//myBGImage = getImage(myDocURL, "resource/background.png");
+		myCharacter = getImage(this.getClass().getResource(
+				"/resource/myCharacter.png"));
+		myBGImage = getImage(this.getClass().getResource(
+				"/resource/background.png"));
 
 		addKeyListener(this);
 
@@ -100,9 +90,8 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 	public void paint(Graphics g) {
 
 		// System.out.println("paint called");
-		//g.drawImage(myBGImage, myBG.getBgx(), myBG.getBgy(), this);
-		g.drawImage(myCharacter, myPlayer.getX() - 61, myPlayer.getY() - 63,
-				this);
+		g.drawImage(myBGImage, myBG.getBgx(), myBG.getBgy(), this);
+		g.drawImage(myCharacter, myPlayer.getX(), myPlayer.getY() - 63, this);
 	}
 
 	@Override
