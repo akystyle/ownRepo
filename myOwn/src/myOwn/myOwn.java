@@ -12,9 +12,10 @@ import java.net.URL;
 public class myOwn extends Applet implements Runnable, KeyListener {
 
 	MyPlayer myPlayer;
+	MyBg myBG;
 	Graphics myGraphics;
 	URL myDocURL;
-	Image myImage, myCharacter;
+	Image myImage, myCharacter, myBGImage;
 
 	@Override
 	public void init() {
@@ -27,13 +28,19 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 		myFrame.setTitle("myOwn App");
 		myFrame.setLocation(200, 200);
 		try {
-			myDocURL = new URL("file:/D:/Android/myOwnRepo/myOwn/");
+			// myDocURL = new
+			// URL("file:/D:/MyDocuments/Projects/Android/Game Maker/myOwn/Repository/myOwn/");
+
+			myDocURL = new URL("resource/myCharacter.png");
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		myCharacter = getImage(myDocURL, "resource/myCharacter.png");
+		
+		System.out.println(this.getClass().getResource("resource/myCharacter.png"));
+		myCharacter = getImage(myDocURL);
+		//myBGImage = getImage(myDocURL, "resource/background.png");
 
 		addKeyListener(this);
 
@@ -41,6 +48,7 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 
 	@Override
 	public void start() {
+		myBG = new MyBg();
 		myPlayer = new MyPlayer();
 		Thread myThread = new Thread(this);
 		myThread.start();
@@ -65,6 +73,7 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+			myBG.calculatePosition();
 			myPlayer.calculatePosition();
 			repaint();
 			// System.out.println(a+"Updated");
@@ -91,7 +100,9 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 	public void paint(Graphics g) {
 
 		// System.out.println("paint called");
-		g.drawImage(myCharacter, myPlayer.getX()-61, myPlayer.getY()-63, this);
+		//g.drawImage(myBGImage, myBG.getBgx(), myBG.getBgy(), this);
+		g.drawImage(myCharacter, myPlayer.getX() - 61, myPlayer.getY() - 63,
+				this);
 	}
 
 	@Override

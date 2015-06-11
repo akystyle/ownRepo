@@ -1,6 +1,6 @@
 package myOwn;
 
-public class myBg {
+public class MyBg {
 
 	int bgx,bgy,bgSpeedx,bgSpeedy;
 	
