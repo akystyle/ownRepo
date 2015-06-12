@@ -9,12 +9,12 @@ public class MyPlayer {
 		if (x <= 1) {
 			x = 1;
 			if (speedx < 0) {
-				myOwn.myBG.bgSpeedx = 3;
+				myOwn.myBG.bgSpeedx = 6;
 			}
 		} else if (x >= 300) {
 			x = 300;
 			if (speedx > 0) {
-				myOwn.myBG.bgSpeedx = -3;
+				myOwn.myBG.bgSpeedx = -6;
 			}
 		} else
 			myOwn.myBG.bgSpeedx = 0;
@@ -45,22 +45,22 @@ public class MyPlayer {
 
 	public void moveLeft() {
 		if (speedx > 1)
-			speedx = -3;
+			speedx = -6;
 		else
-			speedx -= 3;
+			speedx -= 6;
 
-		if (speedx <= -7)
-			speedx = -7;
+		if (speedx <= -10)
+			speedx = -12;
 	}
 
 	public void moveRight() {
 		if (speedx < 1)
-			speedx = 3;
+			speedx = 6;
 		else
-			speedx += 3;
+			speedx += 6;
 
-		if (speedx >= 7)
-			speedx = 7;
+		if (speedx >= 10)
+			speedx = 12;
 	}
 
 	public void jump() {

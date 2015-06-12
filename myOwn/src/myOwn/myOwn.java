@@ -48,8 +48,8 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 	public void start() {
 		myBG = new MyBg();
 		myPlayer = new MyPlayer();
-		heliBoy1 = new Enemy_HeliBoy(100,40);
-		heliBoy2 = new Enemy_HeliBoy(40,100);
+		heliBoy1 = new Enemy_HeliBoy(550,40);
+		heliBoy2 = new Enemy_HeliBoy(570,250);
 		gameTimer = new Timer();
 		Thread myThread = new Thread(this);
 
@@ -79,6 +79,10 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 			}
 			myBG.calculatePosition();
 			myPlayer.calculatePosition();
+			if(checkBornForEachEnemy(heliBoy1))
+				heliBoy1.buzzPosition();
+			if(checkBornForEachEnemy(heliBoy2))
+				heliBoy2.buzzPosition();
 			repaint();
 			// System.out.println(a+"Updated");
 			// a+=1;
@@ -134,7 +138,7 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 			g.drawImage(heliBoy1Image,heliBoy1.getX(),heliBoy1.getY(),this);
 			startNextEnemyCounter(heliBoy2);
 		}
-		else if(checkBornForEachEnemy(heliBoy2)){
+		if(checkBornForEachEnemy(heliBoy2)){
 			g.drawImage(heliBoy2Image,heliBoy2.getX(),heliBoy2.getY(),this);
 		}
 	}
@@ -196,7 +200,7 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 				tempEnemy.readyToBorn = true;
 			}
 
-		}, 10000);
+		}, 5000);
 
 	}
 	
