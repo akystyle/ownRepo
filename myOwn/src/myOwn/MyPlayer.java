@@ -22,7 +22,7 @@ public class MyPlayer {
 
 		if (jumping == 1) {
 			y = y + speedy;
-			if (y <= 350)
+			if (y <= 300)
 				jumping = 2;
 		} else if (jumping == 2) {
 			y = y - speedy;

@@ -122,9 +122,23 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 		// else
 		// g.drawImage(myBGImage,myBG.getBgx(),myBG.getBgy(),this);
 
-		g.drawImage(myBGImage, myBG.getBgx(), myBG.getBgy(), this);
-		g.drawImage(myBGImage, myBG.getBgx() + 2160, myBG.getBgy(), this);
-		g.drawImage(myBGImage, myBG.getBgx() - 2160, myBG.getBgy(), this);
+		if((myBG.getBgx()/2160)>=1){
+			System.out.println("Getting here" + myBG.getBgx());
+			g.drawImage(myBGImage, myBG.getBgx()-(myBG.getBgx()%2160), myBG.getBgy(), this);
+			g.drawImage(myBGImage, (myBG.getBgx()-(myBG.getBgx()%2160)) + 2160, myBG.getBgy(), this);
+			g.drawImage(myBGImage, (myBG.getBgx()-(myBG.getBgx()%2160)) - 2160, myBG.getBgy(), this);	
+		}
+		else if((myBG.getBgx()/2160)<1){
+			System.out.println("Getting outta"+ myBG.getBgx());
+			g.drawImage(myBGImage, myBG.getBgx()+(myBG.getBgx()%2160), myBG.getBgy(), this);
+			g.drawImage(myBGImage, (myBG.getBgx()+(myBG.getBgx()%2160)) + 2160, myBG.getBgy(), this);
+			g.drawImage(myBGImage, (myBG.getBgx()+(myBG.getBgx()%2160)) - 2160, myBG.getBgy(), this);			
+		}
+//		else{
+//			g.drawImage(myBGImage, myBG.getBgx(), myBG.getBgy(), this);
+//			g.drawImage(myBGImage, myBG.getBgx() + 2160, myBG.getBgy(), this);
+//			g.drawImage(myBGImage, myBG.getBgx() - 2160, myBG.getBgy(), this);	
+//		}
 
 		if (myPlayer.ducked)
 			g.drawImage(myDuckChar, myPlayer.getX(), myPlayer.getY() - 63, this);
