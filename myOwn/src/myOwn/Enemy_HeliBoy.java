@@ -2,7 +2,7 @@ package myOwn;
 
 public class Enemy_HeliBoy extends Enemy {
 	
-	int buzzing = 3, initX, initY;
+	int buzzing = 2, initX, initY;
 
 	public Enemy_HeliBoy(int axisX,int axisY) {
 		// TODO Auto-generated constructor stub
