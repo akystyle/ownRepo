@@ -7,16 +7,17 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.net.URL;
-
-import javax.xml.bind.JAXBElement.GlobalScope;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class myOwn extends Applet implements Runnable, KeyListener {
 
 	MyPlayer myPlayer;
-	public static MyBg myBG;
+	static MyBg myBG;
 	Graphics myGraphics;
-	Image myImage, myCharacter, myBGImage,myDuckChar, myJumpChar;
+	Image myImage, myCharacter, myBGImage, myDuckChar, myJumpChar,heliBoy1Image,heliBoy2Image;
+	Timer gameTimer;
+	Enemy_HeliBoy heliBoy1,heliBoy2;
 
 	@Override
 	public void init() {
@@ -32,10 +33,12 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 		myCharacter = getImage(this.getClass().getResource(
 				"/resource/myCharacter.png"));
 		myDuckChar = getImage(this.getClass().getResource("/resource/down.png"));
-		myJumpChar = getImage(this.getClass().getResource("/resource/jumped.png"));
+		myJumpChar = getImage(this.getClass().getResource(
+				"/resource/jumped.png"));
 		myBGImage = getImage(this.getClass().getResource(
 				"/resource/background.png"));
-		
+		heliBoy1Image = heliBoy2Image = getImage(this.getClass().getResource(
+				"/resource/heliboy.png"));;
 
 		addKeyListener(this);
 
@@ -45,7 +48,13 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 	public void start() {
 		myBG = new MyBg();
 		myPlayer = new MyPlayer();
+		heliBoy1 = new Enemy_HeliBoy(100,40);
+		heliBoy2 = new Enemy_HeliBoy(40,100);
+		gameTimer = new Timer();
 		Thread myThread = new Thread(this);
+
+		startNextEnemyCounter(heliBoy1);
+		
 		myThread.start();
 	}
 
@@ -94,30 +103,40 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 	@Override
 	public void paint(Graphics g) {
 
-// 		System.out.println("paint called");
-		
-		
-//		if (myBG.getBgx() < 0){
-//				g.drawImage(myBGImage, (myBG.getBgx()%2160)+2160, myBG.getBgy(), this);
-//				g.drawImage(myBGImage,myBG.getBgx(),myBG.getBgy(),this);
-//		}
-//		else if(myBG.getBgx() > 0){
-//				g.drawImage(myBGImage, (myBG.getBgx()%2160)-2160, myBG.getBgy(), this);
-//				g.drawImage(myBGImage,myBG.getBgx(),myBG.getBgy(),this);
-//		}
-//		else
-//			g.drawImage(myBGImage,myBG.getBgx(),myBG.getBgy(),this);
+		// System.out.println("paint called");
 
-		g.drawImage(myBGImage,myBG.getBgx(),myBG.getBgy(),this);
-		g.drawImage(myBGImage,myBG.getBgx()+2160,myBG.getBgy(),this);
-		g.drawImage(myBGImage,myBG.getBgx()-2160,myBG.getBgy(),this);
-		
-		if(myPlayer.ducked)
-		g.drawImage(myDuckChar, myPlayer.getX(), myPlayer.getY() - 63, this);
-		else if(myPlayer.getJumping()> 0)
+		// if (myBG.getBgx() < 0){
+		// g.drawImage(myBGImage, (myBG.getBgx()%2160)+2160, myBG.getBgy(),
+		// this);
+		// g.drawImage(myBGImage,myBG.getBgx(),myBG.getBgy(),this);
+		// }
+		// else if(myBG.getBgx() > 0){
+		// g.drawImage(myBGImage, (myBG.getBgx()%2160)-2160, myBG.getBgy(),
+		// this);
+		// g.drawImage(myBGImage,myBG.getBgx(),myBG.getBgy(),this);
+		// }
+		// else
+		// g.drawImage(myBGImage,myBG.getBgx(),myBG.getBgy(),this);
+
+		g.drawImage(myBGImage, myBG.getBgx(), myBG.getBgy(), this);
+		g.drawImage(myBGImage, myBG.getBgx() + 2160, myBG.getBgy(), this);
+		g.drawImage(myBGImage, myBG.getBgx() - 2160, myBG.getBgy(), this);
+
+		if (myPlayer.ducked)
+			g.drawImage(myDuckChar, myPlayer.getX(), myPlayer.getY() - 63, this);
+		else if (myPlayer.getJumping() > 0)
 			g.drawImage(myJumpChar, myPlayer.getX(), myPlayer.getY() - 63, this);
 		else
-			g.drawImage(myCharacter, myPlayer.getX(), myPlayer.getY() - 63, this);
+			g.drawImage(myCharacter, myPlayer.getX(), myPlayer.getY() - 63,
+					this);
+		
+		if(checkBornForEachEnemy(heliBoy1)){
+			g.drawImage(heliBoy1Image,heliBoy1.getX(),heliBoy1.getY(),this);
+			startNextEnemyCounter(heliBoy2);
+		}
+		else if(checkBornForEachEnemy(heliBoy2)){
+			g.drawImage(heliBoy2Image,heliBoy2.getX(),heliBoy2.getY(),this);
+		}
 	}
 
 	@Override
@@ -167,5 +186,21 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
 
+	}
+	
+	public void startNextEnemyCounter(Enemy_HeliBoy tempEnemy){
+		gameTimer.schedule(new TimerTask() {
+
+			@Override
+			public void run() {
+				tempEnemy.readyToBorn = true;
+			}
+
+		}, 10000);
+
+	}
+	
+	public boolean checkBornForEachEnemy(Enemy_HeliBoy tempEnemy){
+		return tempEnemy.readyToBorn;
 	}
 }
