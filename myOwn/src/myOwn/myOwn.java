@@ -13,7 +13,7 @@ import java.util.TimerTask;
 public class myOwn extends Applet implements Runnable, KeyListener {
 
 	MyPlayer myPlayer;
-	static MyBg myBG;
+	static MyBg myBG1,myBG2,myBG3;
 	Graphics myGraphics;
 	Image myImage, myCharacter, myBGImage, myDuckChar, myJumpChar,heliBoy1Image,heliBoy2Image;
 	Timer gameTimer;
@@ -46,7 +46,9 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 
 	@Override
 	public void start() {
-		myBG = new MyBg();
+		myBG1 = new MyBg(0,0);
+		myBG2 = new MyBg(2160, 0);
+		myBG3 = new MyBg(-2160,0);
 		myPlayer = new MyPlayer();
 		heliBoy1 = new Enemy_HeliBoy(550,40);
 		heliBoy2 = new Enemy_HeliBoy(570,250);
@@ -77,7 +79,9 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			myBG.calculatePosition();
+			myBG1.calculatePosition();
+			myBG2.calculatePosition();
+			myBG3.calculatePosition();
 			myPlayer.calculatePosition();
 			if(checkBornForEachEnemy(heliBoy1))
 				heliBoy1.buzzPosition();
@@ -109,36 +113,10 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 
 		// System.out.println("paint called");
 
-		// if (myBG.getBgx() < 0){
-		// g.drawImage(myBGImage, (myBG.getBgx()%2160)+2160, myBG.getBgy(),
-		// this);
-		// g.drawImage(myBGImage,myBG.getBgx(),myBG.getBgy(),this);
-		// }
-		// else if(myBG.getBgx() > 0){
-		// g.drawImage(myBGImage, (myBG.getBgx()%2160)-2160, myBG.getBgy(),
-		// this);
-		// g.drawImage(myBGImage,myBG.getBgx(),myBG.getBgy(),this);
-		// }
-		// else
-		// g.drawImage(myBGImage,myBG.getBgx(),myBG.getBgy(),this);
 
-		if((myBG.getBgx()/2160)>=1){
-			System.out.println("Getting here" + myBG.getBgx());
-			g.drawImage(myBGImage, myBG.getBgx()-(myBG.getBgx()%2160), myBG.getBgy(), this);
-			g.drawImage(myBGImage, (myBG.getBgx()-(myBG.getBgx()%2160)) + 2160, myBG.getBgy(), this);
-			g.drawImage(myBGImage, (myBG.getBgx()-(myBG.getBgx()%2160)) - 2160, myBG.getBgy(), this);	
-		}
-		else if((myBG.getBgx()/2160)<1){
-			System.out.println("Getting outta"+ myBG.getBgx());
-			g.drawImage(myBGImage, myBG.getBgx()+(myBG.getBgx()%2160), myBG.getBgy(), this);
-			g.drawImage(myBGImage, (myBG.getBgx()+(myBG.getBgx()%2160)) + 2160, myBG.getBgy(), this);
-			g.drawImage(myBGImage, (myBG.getBgx()+(myBG.getBgx()%2160)) - 2160, myBG.getBgy(), this);			
-		}
-//		else{
-//			g.drawImage(myBGImage, myBG.getBgx(), myBG.getBgy(), this);
-//			g.drawImage(myBGImage, myBG.getBgx() + 2160, myBG.getBgy(), this);
-//			g.drawImage(myBGImage, myBG.getBgx() - 2160, myBG.getBgy(), this);	
-//		}
+			g.drawImage(myBGImage, myBG3.getBgx(), myBG3.getBgy(), this);
+			g.drawImage(myBGImage, myBG1.getBgx(), myBG1.getBgy(), this);
+			g.drawImage(myBGImage, myBG2.getBgx(), myBG2.getBgy(), this);	
 
 		if (myPlayer.ducked)
 			g.drawImage(myDuckChar, myPlayer.getX(), myPlayer.getY() - 63, this);

@@ -9,15 +9,15 @@ public class MyPlayer {
 		if (x <= 1) {
 			x = 1;
 			if (speedx < 0) {
-				myOwn.myBG.bgSpeedx = 6;
+				MyBg.bgSpeedx = 6;
 			}
 		} else if (x >= 300) {
 			x = 300;
 			if (speedx > 0) {
-				myOwn.myBG.bgSpeedx = -6;
+				MyBg.bgSpeedx = -6;
 			}
 		} else
-			myOwn.myBG.bgSpeedx = 0;
+			MyBg.bgSpeedx = 0;
 		x = x + speedx;
 
 		if (jumping == 1) {
@@ -40,7 +40,7 @@ public class MyPlayer {
 
 	public void stopMovingHorizontally() {
 		speedx = 0;
-		myOwn.myBG.bgSpeedx = 0;
+		MyBg.bgSpeedx = 0;
 	}
 
 	public void moveLeft() {
