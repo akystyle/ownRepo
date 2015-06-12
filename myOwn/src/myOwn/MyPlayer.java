@@ -6,11 +6,16 @@ public class MyPlayer {
 	
 
 	public void calculatePosition() {
-		if (x <= 1 && speedx < 0)
+		if (x <= 1 && speedx < 0){
 			x = 1;
-		else if (x >= 300 && speedx > 0)
+			myOwn.myBG.bgSpeedx = 3;
+		}
+		else if (x >= 300 && speedx > 0){
 			x = 300;
+			myOwn.myBG.bgSpeedx = -3;
+		}
 		else
+			myOwn.myBG.bgSpeedx = 0;
 			x = x + speedx;
 		
 		if (jumping == 1){

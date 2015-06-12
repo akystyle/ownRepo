@@ -2,10 +2,10 @@ package myOwn;
 
 public class MyBg {
 
-	int bgx,bgy,bgSpeedx,bgSpeedy;
+	int bgx, bgy,bgSpeedx,bgSpeedy;
 	
 	public void calculatePosition(){
-		
+		bgx +=bgSpeedx;
 	}
 
 	public int getBgx() {

@@ -9,10 +9,12 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.net.URL;
 
+import javax.xml.bind.JAXBElement.GlobalScope;
+
 public class myOwn extends Applet implements Runnable, KeyListener {
 
 	MyPlayer myPlayer;
-	MyBg myBG;
+	public static MyBg myBG;
 	Graphics myGraphics;
 	Image myImage, myCharacter, myBGImage;
 
@@ -90,7 +92,21 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 	public void paint(Graphics g) {
 
 		// System.out.println("paint called");
-		g.drawImage(myBGImage, myBG.getBgx(), myBG.getBgy(), this);
+//		if (myBG.getBgx() < 0){
+//				g.drawImage(myBGImage, (myBG.getBgx()%2160)+2160, myBG.getBgy(), this);
+//				g.drawImage(myBGImage,myBG.getBgx(),myBG.getBgy(),this);
+//		}
+//		else if(myBG.getBgx() > 0){
+//				g.drawImage(myBGImage, (myBG.getBgx()%2160)-2160, myBG.getBgy(), this);
+//				g.drawImage(myBGImage,myBG.getBgx(),myBG.getBgy(),this);
+//		}
+//		else
+//			g.drawImage(myBGImage,myBG.getBgx(),myBG.getBgy(),this);
+
+		g.drawImage(myBGImage,myBG.getBgx(),myBG.getBgy(),this);
+		g.drawImage(myBGImage,myBG.getBgx()+2160,myBG.getBgy(),this);
+		g.drawImage(myBGImage,myBG.getBgx()-2160,myBG.getBgy(),this);
+		
 		g.drawImage(myCharacter, myPlayer.getX(), myPlayer.getY() - 63, this);
 	}
 
