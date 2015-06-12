@@ -2,9 +2,14 @@ package myOwn;
 
 public class MyPlayer {
 
-	int x = 100, y = 400, speedx = 0, speedy = -3, jumping = 0;
+	int x, y, speedx = 0, speedy = -3, jumping = 0;
 	boolean ducked;
 
+	public MyPlayer(int initx,int inity){
+		x = initx;
+		y = inity;
+	}
+	
 	public void calculatePosition() {
 		if (x <= 1) {
 			x = 1;

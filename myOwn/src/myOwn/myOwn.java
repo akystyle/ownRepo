@@ -15,16 +15,17 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 	MyPlayer myPlayer;
 	static MyBg myBG1,myBG2,myBG3;
 	Graphics myGraphics;
-	Image myImage, myCharacter, myBGImage, myDuckChar, myJumpChar,heliBoy1Image,heliBoy2Image;
+	Image myImage, myCharacter, myBGImage, myDuckChar, myJumpChar,heliBoy1Image,heliBoy2Image,myPlayerBulletImage;
 	Timer gameTimer;
 	Enemy_HeliBoy heliBoy1,heliBoy2;
+	PlayerBullet myPlayerBullet;
 
 	@Override
 	public void init() {
 
 		setSize(800, 480);
 		setBackground(Color.BLACK);
-		// setForeground(Color.WHITE);
+		setForeground(Color.WHITE);
 		setFocusable(true);
 		Frame myFrame = (Frame) this.getParent().getParent();
 		myFrame.setTitle("myOwn App");
@@ -38,7 +39,9 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 		myBGImage = getImage(this.getClass().getResource(
 				"/resource/background.png"));
 		heliBoy1Image = heliBoy2Image = getImage(this.getClass().getResource(
-				"/resource/heliboy.png"));;
+				"/resource/heliboy.png"));
+		myPlayerBulletImage = getImage(this.getClass().getResource(
+				"/resource/bullet.jpg"));
 
 		addKeyListener(this);
 
@@ -49,15 +52,36 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 		myBG1 = new MyBg(0,0);
 		myBG2 = new MyBg(2160, 0);
 		myBG3 = new MyBg(-2160,0);
-		myPlayer = new MyPlayer();
+		myPlayer = new MyPlayer(100,400);
 		heliBoy1 = new Enemy_HeliBoy(550,40);
 		heliBoy2 = new Enemy_HeliBoy(570,250);
+		myPlayerBullet = new PlayerBullet(0,0);
 		gameTimer = new Timer();
 		Thread myThread = new Thread(this);
 
 		startNextEnemyCounter(heliBoy1);
 		
 		myThread.start();
+	}
+	
+	public void bulletShoot(){
+		if(myPlayer.ducked){
+			myPlayerBullet.setProjectileX(myPlayer.getX()+95);
+			myPlayerBullet.setProjectileY(myPlayer.getY()+10);
+			myPlayerBullet.setJumpShoot(false);
+		}
+		
+		else if (myPlayer.getJumping() > 0){
+			myPlayerBullet.setProjectileX(myPlayer.getX()+110);
+			myPlayerBullet.setProjectileY(myPlayer.getY()-41);	
+			myPlayerBullet.setJumpShoot(true);
+		}
+		else{
+		myPlayerBullet.setProjectileX(myPlayer.getX()+110);
+		myPlayerBullet.setProjectileY(myPlayer.getY()-23);
+		myPlayerBullet.setJumpShoot(false);
+	}
+		myPlayerBullet.visible = true;
 	}
 
 	@Override
@@ -83,6 +107,8 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 			myBG2.calculatePosition();
 			myBG3.calculatePosition();
 			myPlayer.calculatePosition();
+			if(myPlayerBullet.visible)
+			myPlayerBullet.calculatePosition();
 			if(checkBornForEachEnemy(heliBoy1))
 				heliBoy1.buzzPosition();
 			if(checkBornForEachEnemy(heliBoy2))
@@ -113,11 +139,12 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 
 		// System.out.println("paint called");
 
-
+//Background drawings
 			g.drawImage(myBGImage, myBG3.getBgx(), myBG3.getBgy(), this);
 			g.drawImage(myBGImage, myBG1.getBgx(), myBG1.getBgy(), this);
 			g.drawImage(myBGImage, myBG2.getBgx(), myBG2.getBgy(), this);	
 
+//Player Drawings 
 		if (myPlayer.ducked)
 			g.drawImage(myDuckChar, myPlayer.getX(), myPlayer.getY() - 63, this);
 		else if (myPlayer.getJumping() > 0)
@@ -126,12 +153,18 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 			g.drawImage(myCharacter, myPlayer.getX(), myPlayer.getY() - 63,
 					this);
 		
+//Enemy Drawings
 		if(checkBornForEachEnemy(heliBoy1)){
 			g.drawImage(heliBoy1Image,heliBoy1.getX(),heliBoy1.getY(),this);
 			startNextEnemyCounter(heliBoy2);
 		}
 		if(checkBornForEachEnemy(heliBoy2)){
 			g.drawImage(heliBoy2Image,heliBoy2.getX(),heliBoy2.getY(),this);
+		}
+		
+//Player Bullet Drawings
+		if(myPlayerBullet.visible){
+			g.drawImage(myPlayerBulletImage, myPlayerBullet.projectileX,myPlayerBullet.projectileY,this);
 		}
 	}
 
@@ -155,6 +188,8 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 		case KeyEvent.VK_SPACE:
 			myPlayer.jump();
 			break;
+		case KeyEvent.VK_CONTROL:
+			bulletShoot();
 		}
 	}
 
