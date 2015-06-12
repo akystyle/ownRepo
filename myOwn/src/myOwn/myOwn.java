@@ -16,7 +16,7 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 	MyPlayer myPlayer;
 	public static MyBg myBG;
 	Graphics myGraphics;
-	Image myImage, myCharacter, myBGImage;
+	Image myImage, myCharacter, myBGImage,myDuckChar, myJumpChar;
 
 	@Override
 	public void init() {
@@ -31,8 +31,11 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 
 		myCharacter = getImage(this.getClass().getResource(
 				"/resource/myCharacter.png"));
+		myDuckChar = getImage(this.getClass().getResource("/resource/down.png"));
+		myJumpChar = getImage(this.getClass().getResource("/resource/jumped.png"));
 		myBGImage = getImage(this.getClass().getResource(
 				"/resource/background.png"));
+		
 
 		addKeyListener(this);
 
@@ -91,7 +94,9 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 	@Override
 	public void paint(Graphics g) {
 
-		// System.out.println("paint called");
+// 		System.out.println("paint called");
+		
+		
 //		if (myBG.getBgx() < 0){
 //				g.drawImage(myBGImage, (myBG.getBgx()%2160)+2160, myBG.getBgy(), this);
 //				g.drawImage(myBGImage,myBG.getBgx(),myBG.getBgy(),this);
@@ -107,7 +112,12 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 		g.drawImage(myBGImage,myBG.getBgx()+2160,myBG.getBgy(),this);
 		g.drawImage(myBGImage,myBG.getBgx()-2160,myBG.getBgy(),this);
 		
-		g.drawImage(myCharacter, myPlayer.getX(), myPlayer.getY() - 63, this);
+		if(myPlayer.ducked)
+		g.drawImage(myDuckChar, myPlayer.getX(), myPlayer.getY() - 63, this);
+		else if(myPlayer.getJumping()> 0)
+			g.drawImage(myJumpChar, myPlayer.getX(), myPlayer.getY() - 63, this);
+		else
+			g.drawImage(myCharacter, myPlayer.getX(), myPlayer.getY() - 63, this);
 	}
 
 	@Override
@@ -116,6 +126,7 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_DOWN:
 			myPlayer.moveDown();
+			myPlayer.setDucked(true);
 			break;
 		case KeyEvent.VK_UP:
 			myPlayer.moveUp();
@@ -135,7 +146,21 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-
+		switch (e.getKeyCode()) {
+		case KeyEvent.VK_DOWN:
+			myPlayer.setDucked(false);
+			break;
+		case KeyEvent.VK_UP:
+			break;
+		case KeyEvent.VK_LEFT:
+			myPlayer.stopMovingHorizontally();
+			break;
+		case KeyEvent.VK_RIGHT:
+			myPlayer.stopMovingHorizontally();
+			break;
+		case KeyEvent.VK_SPACE:
+			break;
+		}
 	}
 
 	@Override
