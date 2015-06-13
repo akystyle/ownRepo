@@ -20,7 +20,7 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	MyPlayer myPlayer;
 	static MyBg myBG1, myBG2, myBG3;
 	Graphics myGraphics;
@@ -29,8 +29,8 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 	Timer gameTimer;
 	Enemy_HeliBoy heliBoy1, heliBoy2;
 	PlayerBullet myPlayerBullet;
-	ArrayList<Image> myPlayerAnimationImages,enemyAnimationImages;
-	Animate myPlayerAnimation,enemyAnimation;
+	ArrayList<Image> myPlayerAnimationImages, enemyAnimationImages;
+	Animate myPlayerAnimation, enemyAnimation;
 
 	@Override
 	public void init() {
@@ -44,8 +44,8 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 		myFrame.setLocation(200, 200);
 
 		// Grabbing Required Images
-		myDuckChar = getImageResource("/characterAnimation/down.png");
-		myJumpChar = getImageResource("/characterAnimation/jumped.png");
+		myDuckChar = getImageResource("characterAnimation/down.png");
+		myJumpChar = getImageResource("characterAnimation/jumped.png");
 		myBGImage = getImageResource("background.png");
 		myPlayerBulletImage = getImageResource("bullet.jpg");
 
@@ -53,18 +53,20 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 		myPlayerAnimationImages = animate("resource/images/characterAnimation");
 		enemyAnimationImages = animate("resource/images/enemyAnimation");
 
-		//Initializing Player Animation
+		// Initializing Player Animation
 		int[] myPlayerAnimationdurations = { 25, 10, 15, 10 };
-		myPlayerAnimation = new Animate(myPlayerAnimationImages,myPlayerAnimationdurations);
-		
-		//Initializing Enemy Animation
-		int[] enemyAnimationDurations = {4,7,7,7,7,7,7,7};
-		enemyAnimation = new Animate(enemyAnimationImages, enemyAnimationDurations);
-		
-		//Grabbing Animation images for Players and Enemy
+		myPlayerAnimation = new Animate(myPlayerAnimationImages,
+				myPlayerAnimationdurations);
+
+		// Initializing Enemy Animation
+		int[] enemyAnimationDurations = { 4, 7, 7, 7, 7, 7, 7, 7 };
+		enemyAnimation = new Animate(enemyAnimationImages,
+				enemyAnimationDurations);
+
+		// Grabbing Animation images for Players and Enemy
 		myCharacter = myPlayerAnimation.calculateFrame();
 		heliBoy1Image = heliBoy2Image = enemyAnimation.calculateFrame();
-		
+
 		// Adding Key Listeners so that program can respond to the key events
 		addKeyListener(this);
 
@@ -80,13 +82,13 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 
 		// Initializing Player and his animation
 		myPlayer = new MyPlayer(100, 400);
-		
+
 		// Initializing Enemies and their respective timers to allow them born
 		heliBoy1 = new Enemy_HeliBoy(550, 40);
 		heliBoy2 = new Enemy_HeliBoy(570, 250);
 		gameTimer = new Timer();
 		startNextEnemyCounter(heliBoy1);
-		
+
 		// Initializing bullets
 		myPlayerBullet = new PlayerBullet(0, 0);
 
@@ -141,11 +143,11 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 
 			if (myPlayerBullet.visible)
 				myPlayerBullet.calculatePosition();
-			if (checkBornForEachEnemy(heliBoy1)){
+			if (checkBornForEachEnemy(heliBoy1)) {
 				heliBoy1.buzzPosition();
 				heliBoy1Image = enemyAnimation.calculateFrame();
 			}
-			if (checkBornForEachEnemy(heliBoy2)){
+			if (checkBornForEachEnemy(heliBoy2)) {
 				heliBoy2.buzzPosition();
 				heliBoy2Image = enemyAnimation.calculateFrame();
 			}
@@ -203,7 +205,7 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 			g.drawImage(myPlayerBulletImage, myPlayerBullet.projectileX,
 					myPlayerBullet.projectileY, this);
 		}
-		
+
 	}
 
 	@Override
@@ -283,8 +285,12 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 		ArrayList<Image> tempList = new ArrayList<Image>();
 
 		for (int i = 0; i < imageList.length; i++) {
-			tempList.add(getImage(this.getClass().getResource(
-					"/" + relativePath + "/" + imageList[i].getName())));
+			String s = imageList[i].getName().substring(0,
+					imageList[i].getName().length() - 4);
+			if (s.equalsIgnoreCase(Integer.toString(i))) {
+				tempList.add(getImage(this.getClass().getResource(
+						"/" + relativePath + "/" + imageList[i].getName())));
+			}
 		}
 		return tempList;
 	}
