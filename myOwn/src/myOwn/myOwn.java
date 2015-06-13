@@ -44,10 +44,9 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 		myFrame.setLocation(200, 200);
 
 		// Grabbing Required Images
-		myDuckChar = getImageResource("down.png");
-		myJumpChar = getImageResource("jumped.png");
+		myDuckChar = getImageResource("/characterAnimation/down.png");
+		myJumpChar = getImageResource("/characterAnimation/jumped.png");
 		myBGImage = getImageResource("background.png");
-		
 		myPlayerBulletImage = getImageResource("bullet.jpg");
 
 		// Grabbing Animation resources
