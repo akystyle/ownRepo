@@ -31,17 +31,12 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 		myFrame.setTitle("myOwn App");
 		myFrame.setLocation(200, 200);
 
-		myCharacter = getImage(this.getClass().getResource(
-				"/resource/myCharacter.png"));
-		myDuckChar = getImage(this.getClass().getResource("/resource/down.png"));
-		myJumpChar = getImage(this.getClass().getResource(
-				"/resource/jumped.png"));
-		myBGImage = getImage(this.getClass().getResource(
-				"/resource/background.png"));
-		heliBoy1Image = heliBoy2Image = getImage(this.getClass().getResource(
-				"/resource/heliboy.png"));
-		myPlayerBulletImage = getImage(this.getClass().getResource(
-				"/resource/bullet.jpg"));
+		myCharacter = getImageResource("myCharacter.png");
+		myDuckChar = getImageResource("down.png");
+		myJumpChar = getImageResource("jumped.png");
+		myBGImage = getImageResource("background.png");
+		heliBoy1Image = heliBoy2Image = getImageResource("heliboy.png");
+		myPlayerBulletImage = getImageResource("bullet.jpg");
 
 		addKeyListener(this);
 
@@ -233,5 +228,9 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 	
 	public boolean checkBornForEachEnemy(Enemy_HeliBoy tempEnemy){
 		return tempEnemy.readyToBorn;
+	}
+	
+	private Image getImageResource(String ImageName){
+		return getImage(this.getClass().getResource("/resource/images/" + ImageName));
 	}
 }
