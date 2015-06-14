@@ -7,10 +7,14 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import javax.imageio.ImageIO;
 
 import akyStudio.framework.Animate;
 
@@ -21,21 +25,27 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	final int appWidth = 800, appHeight = 480;
+	final String myGameGroundRowOrColumnSpread ="row", myGameOceanRowOrColumnSpread = "row";
+
 	MyPlayer myPlayer;
 	static MyBg myBG1, myBG2, myBG3;
 	Graphics myGraphics;
 	Image myImage, myCharacter, myBGImage, myDuckChar, myJumpChar,
 			heliBoy1Image, heliBoy2Image, myPlayerBulletImage;
+ 	BufferedImage myGameGroundImage, myGameOceanImage;
 	Timer gameTimer;
 	Enemy_HeliBoy heliBoy1, heliBoy2;
 	PlayerBullet myPlayerBullet;
 	ArrayList<Image> myPlayerAnimationImages, enemyAnimationImages;
 	Animate myPlayerAnimation, enemyAnimation;
+	TileMap myGameGround, myGameOcean;
+	int[][] myGameGroundSpread,myGameOceanSpread;
 
 	@Override
 	public void init() {
 
-		setSize(800, 480);
+		setSize(appWidth, appHeight);
 		setBackground(Color.BLACK);
 		setForeground(Color.WHITE);
 		setFocusable(true);
@@ -46,8 +56,10 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 		// Grabbing Required Images
 		myDuckChar = getImageResource("characterAnimation/down.png");
 		myJumpChar = getImageResource("characterAnimation/jumped.png");
-		myBGImage = getImageResource("background.png");
+		myBGImage = getImageResource("environment_n_backgrounds/background.png");
 		myPlayerBulletImage = getImageResource("bullet.jpg");
+		myGameGroundImage = getBufferedImageResource("environment_n_backgrounds/tiledirt.png");
+		myGameOceanImage = getBufferedImageResource("environment_n_backgrounds/tileocean.png");
 
 		// Grabbing Animation resources
 		myPlayerAnimationImages = animate("resource/images/characterAnimation");
@@ -80,6 +92,12 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 		myBG2 = new MyBg(2160, 0);
 		myBG3 = new MyBg(-2160, 0);
 
+		//Initializing Grounds and oceans, 2nd Background
+		myGameGround = new TileMap(appWidth, appHeight, myGameGroundImage.getWidth(),myGameGroundImage.getHeight() , myGameGroundRowOrColumnSpread, 11);
+		myGameOcean = new TileMap(appWidth, appHeight, myGameOceanImage.getWidth(), myGameOceanImage.getHeight(), myGameOceanRowOrColumnSpread, 10);
+		myGameGroundSpread = myGameGround.tileSpreader();
+		myGameOceanSpread = myGameOcean.tileSpreader();
+		
 		// Initializing Player and his animation
 		myPlayer = new MyPlayer(100, 400);
 
@@ -138,6 +156,9 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 			myBG1.calculatePosition();
 			myBG2.calculatePosition();
 			myBG3.calculatePosition();
+			
+			
+			
 			myPlayer.calculatePosition();
 			myCharacter = myPlayerAnimation.calculateFrame();
 
@@ -182,6 +203,14 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 		g.drawImage(myBGImage, myBG1.getBgx(), myBG1.getBgy(), this);
 		g.drawImage(myBGImage, myBG2.getBgx(), myBG2.getBgy(), this);
 
+		//2nd Background drawings
+			for(int i=0;i<myGameGroundSpread.length;i++){
+				g.drawImage(myGameGroundImage, myGameGroundSpread[i][0], myGameGroundSpread[i][1], this);
+			}
+			for(int i=0;i<myGameOceanSpread.length;i++){
+				g.drawImage(myGameOceanImage, myGameOceanSpread[i][0], myGameOceanSpread[i][1], this);
+			}
+		
 		// Player Drawings
 		if (myPlayer.ducked)
 			g.drawImage(myDuckChar, myPlayer.getX(), myPlayer.getY() - 63, this);
@@ -276,6 +305,16 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 	private Image getImageResource(String ImageName) {
 		return getImage(this.getClass().getResource(
 				"/resource/images/" + ImageName));
+	}
+	
+	private BufferedImage getBufferedImageResource(String ImageName) {
+		try {
+			return ImageIO.read(this.getClass().getResource(
+					"/resource/images/" + ImageName));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	private ArrayList<Image> animate(String relativePath) {

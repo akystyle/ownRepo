@@ -41,7 +41,7 @@ public class MyBg {
 	}
 
 	public void setBgSpeedx(int bgSpeedx) {
-		this.bgSpeedx = bgSpeedx;
+		MyBg.bgSpeedx = bgSpeedx;
 	}
 
 	public int getBgSpeedy() {
@@ -49,7 +49,7 @@ public class MyBg {
 	}
 
 	public void setBgSpeedy(int bgSpeedy) {
-		this.bgSpeedy = bgSpeedy;
+		MyBg.bgSpeedy = bgSpeedy;
 	}
 	
 	
