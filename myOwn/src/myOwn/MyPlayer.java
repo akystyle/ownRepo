@@ -14,12 +14,12 @@ public class MyPlayer {
 		if (x <= 1) {
 			x = 1;
 			if (speedx < 0) {
-				MyBg.bgSpeedx = 6;
+				MyBg.bgSpeedx = 2;
 			}
 		} else if (x >= 300) {
 			x = 300;
 			if (speedx > 0) {
-				MyBg.bgSpeedx = -6;
+				MyBg.bgSpeedx = -2;
 			}
 		} else
 			MyBg.bgSpeedx = 0;

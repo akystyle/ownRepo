@@ -3,7 +3,8 @@ package myOwn;
 public class MyBg {
 
 	int bgx, bgy;
-	static int bgSpeedx,bgSpeedy;
+	static int bgSpeedx;
+	static int bgSpeedy;
 	
 	public MyBg(int backX,int backY){
 		

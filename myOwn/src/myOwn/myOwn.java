@@ -31,7 +31,7 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 	MyPlayer myPlayer;
 	static MyBg myBG1, myBG2, myBG3;
 	Graphics myGraphics;
-	Image myImage, myCharacter, myBGImage, myDuckChar, myJumpChar,
+	BufferedImage myImage, myCharacter, myBGImage, myDuckChar, myJumpChar,
 			heliBoy1Image, heliBoy2Image, myPlayerBulletImage;
  	BufferedImage myGameGroundImage, myGameOceanImage;
 	Timer gameTimer;
@@ -39,8 +39,8 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 	PlayerBullet myPlayerBullet;
 	ArrayList<Image> myPlayerAnimationImages, enemyAnimationImages;
 	Animate myPlayerAnimation, enemyAnimation;
-	TileMap myGameGround, myGameOcean;
-	int[][] myGameGroundSpread,myGameOceanSpread;
+	TileMap myGameGround1,myGameGround2,myGameGround3, myGameOcean1,myGameOcean2,myGameOcean3;
+	int[][] myGameGroundSpread1,myGameGroundSpread2,myGameGroundSpread3,myGameOceanSpread1,myGameOceanSpread2,myGameOceanSpread3;
 
 	@Override
 	public void init() {
@@ -54,10 +54,10 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 		myFrame.setLocation(200, 200);
 
 		// Grabbing Required Images
-		myDuckChar = getImageResource("characterAnimation/down.png");
-		myJumpChar = getImageResource("characterAnimation/jumped.png");
-		myBGImage = getImageResource("environment_n_backgrounds/background.png");
-		myPlayerBulletImage = getImageResource("bullet.jpg");
+		myDuckChar = getBufferedImageResource("characterAnimation/down.png");
+		myJumpChar = getBufferedImageResource("characterAnimation/jumped.png");
+		myBGImage = getBufferedImageResource("environment_n_backgrounds/background.png");
+		myPlayerBulletImage = getBufferedImageResource("bullet.jpg");
 		myGameGroundImage = getBufferedImageResource("environment_n_backgrounds/tiledirt.png");
 		myGameOceanImage = getBufferedImageResource("environment_n_backgrounds/tileocean.png");
 
@@ -76,8 +76,8 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 				enemyAnimationDurations);
 
 		// Grabbing Animation images for Players and Enemy
-		myCharacter = myPlayerAnimation.calculateFrame();
-		heliBoy1Image = heliBoy2Image = enemyAnimation.calculateFrame();
+		myCharacter = (BufferedImage) myPlayerAnimation.calculateFrame();
+		heliBoy1Image = heliBoy2Image = (BufferedImage) enemyAnimation.calculateFrame();
 
 		// Adding Key Listeners so that program can respond to the key events
 		addKeyListener(this);
@@ -93,10 +93,19 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 		myBG3 = new MyBg(-2160, 0);
 
 		//Initializing Grounds and oceans, 2nd Background
-		myGameGround = new TileMap(appWidth, appHeight, myGameGroundImage.getWidth(),myGameGroundImage.getHeight() , myGameGroundRowOrColumnSpread, 11);
-		myGameOcean = new TileMap(appWidth, appHeight, myGameOceanImage.getWidth(), myGameOceanImage.getHeight(), myGameOceanRowOrColumnSpread, 10);
-		myGameGroundSpread = myGameGround.tileSpreader();
-		myGameOceanSpread = myGameOcean.tileSpreader();
+		myGameGround1 = new TileMap(-2160,0,appWidth, appHeight, myGameGroundImage.getWidth(),myGameGroundImage.getHeight() , myGameGroundRowOrColumnSpread, 11,4);
+		myGameOcean1 = new TileMap(-2160,0,appWidth, appHeight, myGameOceanImage.getWidth(), myGameOceanImage.getHeight(), myGameOceanRowOrColumnSpread, 10,3);
+		myGameGround2 = new TileMap(0,0,appWidth, appHeight, myGameGroundImage.getWidth(),myGameGroundImage.getHeight() , myGameGroundRowOrColumnSpread, 11,4);
+		myGameOcean2 = new TileMap(0,0,appWidth, appHeight, myGameOceanImage.getWidth(), myGameOceanImage.getHeight(), myGameOceanRowOrColumnSpread, 10,3);
+		myGameGround3 = new TileMap(2160,0,appWidth, appHeight, myGameGroundImage.getWidth(),myGameGroundImage.getHeight() , myGameGroundRowOrColumnSpread, 11,4);
+		myGameOcean3 = new TileMap(2160,0,appWidth, appHeight, myGameOceanImage.getWidth(), myGameOceanImage.getHeight(), myGameOceanRowOrColumnSpread, 10,3);
+
+		myGameGroundSpread1 = myGameGround1.tileSpreader();
+		myGameOceanSpread1 = myGameOcean1.tileSpreader();
+		myGameGroundSpread2 = myGameGround2.tileSpreader();
+		myGameOceanSpread2 = myGameOcean2.tileSpreader();
+		myGameGroundSpread3 = myGameGround3.tileSpreader();
+		myGameOceanSpread3 = myGameOcean3.tileSpreader();
 		
 		// Initializing Player and his animation
 		myPlayer = new MyPlayer(100, 400);
@@ -157,20 +166,25 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 			myBG2.calculatePosition();
 			myBG3.calculatePosition();
 			
-			
-			
-			myPlayer.calculatePosition();
-			myCharacter = myPlayerAnimation.calculateFrame();
+			myPlayer.calculatePosition();			
+			myGameGroundSpread1 = myGameGround1.calculatePosition(myGameGroundSpread1, myPlayer.getSpeedx());
+			myGameOceanSpread1 = myGameOcean1.calculatePosition(myGameOceanSpread1, myPlayer.getSpeedx());
+			myGameGroundSpread2 = myGameGround2.calculatePosition(myGameGroundSpread2, myPlayer.getSpeedx());
+			myGameOceanSpread2 = myGameOcean2.calculatePosition(myGameOceanSpread2, myPlayer.getSpeedx());
+			myGameGroundSpread3 = myGameGround3.calculatePosition(myGameGroundSpread3, myPlayer.getSpeedx());
+			myGameOceanSpread3 = myGameOcean3.calculatePosition(myGameOceanSpread3, myPlayer.getSpeedx());
+
+			myCharacter = (BufferedImage) myPlayerAnimation.calculateFrame();
 
 			if (myPlayerBullet.visible)
 				myPlayerBullet.calculatePosition();
 			if (checkBornForEachEnemy(heliBoy1)) {
 				heliBoy1.buzzPosition();
-				heliBoy1Image = enemyAnimation.calculateFrame();
+				heliBoy1Image = (BufferedImage) enemyAnimation.calculateFrame();
 			}
 			if (checkBornForEachEnemy(heliBoy2)) {
 				heliBoy2.buzzPosition();
-				heliBoy2Image = enemyAnimation.calculateFrame();
+				heliBoy2Image = (BufferedImage) enemyAnimation.calculateFrame();
 			}
 			repaint();
 			// System.out.println(a+"Updated");
@@ -182,7 +196,7 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 	public void update(Graphics g) {
 
 		if (myImage == null) {
-			myImage = createImage(this.getWidth(), this.getHeight());
+			myImage = (BufferedImage) createImage(this.getWidth(), this.getHeight());
 			myGraphics = myImage.getGraphics();
 		}
 
@@ -204,11 +218,15 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 		g.drawImage(myBGImage, myBG2.getBgx(), myBG2.getBgy(), this);
 
 		//2nd Background drawings
-			for(int i=0;i<myGameGroundSpread.length;i++){
-				g.drawImage(myGameGroundImage, myGameGroundSpread[i][0], myGameGroundSpread[i][1], this);
+			for(int i=0;i<myGameGroundSpread1.length;i++){
+				g.drawImage(myGameGroundImage, myGameGroundSpread1[i][0], myGameGroundSpread1[i][1], this);
+				g.drawImage(myGameGroundImage, myGameGroundSpread2[i][0], myGameGroundSpread2[i][1], this);
+				g.drawImage(myGameGroundImage, myGameGroundSpread3[i][0], myGameGroundSpread3[i][1], this);
 			}
-			for(int i=0;i<myGameOceanSpread.length;i++){
-				g.drawImage(myGameOceanImage, myGameOceanSpread[i][0], myGameOceanSpread[i][1], this);
+			for(int i=0;i<myGameOceanSpread1.length;i++){
+				g.drawImage(myGameOceanImage, myGameOceanSpread1[i][0], myGameOceanSpread1[i][1], this);
+				g.drawImage(myGameOceanImage, myGameOceanSpread2[i][0], myGameOceanSpread2[i][1], this);
+				g.drawImage(myGameOceanImage, myGameOceanSpread3[i][0], myGameOceanSpread3[i][1], this);
 			}
 		
 		// Player Drawings
@@ -301,11 +319,6 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 	public boolean checkBornForEachEnemy(Enemy_HeliBoy tempEnemy) {
 		return tempEnemy.readyToBorn;
 	}
-
-	private Image getImageResource(String ImageName) {
-		return getImage(this.getClass().getResource(
-				"/resource/images/" + ImageName));
-	}
 	
 	private BufferedImage getBufferedImageResource(String ImageName) {
 		try {
@@ -327,8 +340,13 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 			String s = imageList[i].getName().substring(0,
 					imageList[i].getName().length() - 4);
 			if (s.equalsIgnoreCase(Integer.toString(i))) {
-				tempList.add(getImage(this.getClass().getResource(
-						"/" + relativePath + "/" + imageList[i].getName())));
+				try {
+					tempList.add(ImageIO.read(this.getClass().getResource(
+							"/" + relativePath + "/" + imageList[i].getName())));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 		return tempList;
