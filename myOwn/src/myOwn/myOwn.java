@@ -9,6 +9,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Timer;
@@ -33,7 +35,7 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 	Graphics myGraphics;
 	BufferedImage myImage, myCharacter, myBGImage, myDuckChar, myJumpChar,
 			heliBoy1Image, heliBoy2Image, myPlayerBulletImage;
- 	BufferedImage myGameGroundImage, myGameOceanImage;
+ 	BufferedImage myGameGrassTopImage,myGameGrassLeftImage,myGameGrassRightImage,myGameGrassBottomImage, myGameOceanImage;
 	Timer gameTimer;
 	Enemy_HeliBoy heliBoy1, heliBoy2;
 	PlayerBullet myPlayerBullet;
@@ -58,7 +60,10 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 		myJumpChar = getBufferedImageResource("characterAnimation/jumped.png");
 		myBGImage = getBufferedImageResource("environment_n_backgrounds/background.png");
 		myPlayerBulletImage = getBufferedImageResource("bullet.jpg");
-		myGameGroundImage = getBufferedImageResource("environment_n_backgrounds/tiledirt.png");
+		myGameGrassTopImage = getBufferedImageResource("environment_n_backgrounds/tilegrasstop.png");
+		myGameGrassLeftImage = getBufferedImageResource("environment_n_backgrounds/tilegrassleft.png");
+		myGameGrassRightImage = getBufferedImageResource("environment_n_backgrounds/tilegrassright.png");
+		myGameGrassBottomImage = getBufferedImageResource("environment_n_backgrounds/tilegrassbot.png");
 		myGameOceanImage = getBufferedImageResource("environment_n_backgrounds/tileocean.png");
 
 		// Grabbing Animation resources
@@ -93,11 +98,11 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 		myBG3 = new MyBg(-2160, 0);
 
 		//Initializing Grounds and oceans, 2nd Background
-		myGameGround1 = new TileMap(-2160,0,appWidth, appHeight, myGameGroundImage.getWidth(),myGameGroundImage.getHeight() , myGameGroundRowOrColumnSpread, 11,4);
+		myGameGround1 = new TileMap(-2160,0,appWidth, appHeight, myGameGrassTopImage.getWidth(),myGameGrassTopImage.getHeight() , myGameGroundRowOrColumnSpread, 11,4);
 		myGameOcean1 = new TileMap(-2160,0,appWidth, appHeight, myGameOceanImage.getWidth(), myGameOceanImage.getHeight(), myGameOceanRowOrColumnSpread, 10,3);
-		myGameGround2 = new TileMap(0,0,appWidth, appHeight, myGameGroundImage.getWidth(),myGameGroundImage.getHeight() , myGameGroundRowOrColumnSpread, 11,4);
+		myGameGround2 = new TileMap(0,0,appWidth, appHeight, myGameGrassTopImage.getWidth(),myGameGrassTopImage.getHeight() , myGameGroundRowOrColumnSpread, 11,4);
 		myGameOcean2 = new TileMap(0,0,appWidth, appHeight, myGameOceanImage.getWidth(), myGameOceanImage.getHeight(), myGameOceanRowOrColumnSpread, 10,3);
-		myGameGround3 = new TileMap(2160,0,appWidth, appHeight, myGameGroundImage.getWidth(),myGameGroundImage.getHeight() , myGameGroundRowOrColumnSpread, 11,4);
+		myGameGround3 = new TileMap(2160,0,appWidth, appHeight, myGameGrassTopImage.getWidth(),myGameGrassTopImage.getHeight() , myGameGroundRowOrColumnSpread, 11,4);
 		myGameOcean3 = new TileMap(2160,0,appWidth, appHeight, myGameOceanImage.getWidth(), myGameOceanImage.getHeight(), myGameOceanRowOrColumnSpread, 10,3);
 
 		myGameGroundSpread1 = myGameGround1.tileSpreader();
@@ -107,6 +112,10 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 		myGameGroundSpread3 = myGameGround3.tileSpreader();
 		myGameOceanSpread3 = myGameOcean3.tileSpreader();
 		
+		//Loading Maps
+		
+			myGameGround1.mapLoader("resource/data/level_maps/map1.txt");
+					
 		// Initializing Player and his animation
 		myPlayer = new MyPlayer(100, 400);
 
@@ -219,9 +228,9 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 
 		//2nd Background drawings
 			for(int i=0;i<myGameGroundSpread1.length;i++){
-				g.drawImage(myGameGroundImage, myGameGroundSpread1[i][0], myGameGroundSpread1[i][1], this);
-				g.drawImage(myGameGroundImage, myGameGroundSpread2[i][0], myGameGroundSpread2[i][1], this);
-				g.drawImage(myGameGroundImage, myGameGroundSpread3[i][0], myGameGroundSpread3[i][1], this);
+				g.drawImage(myGameGrassTopImage, myGameGroundSpread1[i][0], myGameGroundSpread1[i][1], this);
+				g.drawImage(myGameGrassTopImage, myGameGroundSpread2[i][0], myGameGroundSpread2[i][1], this);
+				g.drawImage(myGameGrassTopImage, myGameGroundSpread3[i][0], myGameGroundSpread3[i][1], this);
 			}
 			for(int i=0;i<myGameOceanSpread1.length;i++){
 				g.drawImage(myGameOceanImage, myGameOceanSpread1[i][0], myGameOceanSpread1[i][1], this);
@@ -315,7 +324,7 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 		}, 5000);
 
 	}
-
+	
 	public boolean checkBornForEachEnemy(Enemy_HeliBoy tempEnemy) {
 		return tempEnemy.readyToBorn;
 	}
