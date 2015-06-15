@@ -13,17 +13,20 @@ public class MyPlayer {
 	public void calculatePosition() {
 		if (x <= 1) {
 			x = 1;
-			if (speedx < 0) {
+			if (speedx < 0) 
 				MyBg.bgSpeedx = 2;
-			}
+			else
+				x = x + speedx;
 		} else if (x >= 300) {
 			x = 300;
-			if (speedx > 0) {
+			if (speedx > 0)
 				MyBg.bgSpeedx = -2;
-			}
-		} else
+			else
+				x = x + speedx;
+		} else{
 			MyBg.bgSpeedx = 0;
 		x = x + speedx;
+		}
 
 		if (jumping == 1) {
 			y = y + speedy;
@@ -49,23 +52,20 @@ public class MyPlayer {
 	}
 
 	public void moveLeft() {
-		if (speedx > 1)
-			speedx = -6;
-		else
-			speedx -= 6;
 
+			speedx = -6;
+/*
 		if (speedx <= -10)
 			speedx = -12;
+*/
 	}
 
 	public void moveRight() {
-		if (speedx < 1)
 			speedx = 6;
-		else
-			speedx += 6;
-
+/*
 		if (speedx >= 10)
 			speedx = 12;
+*/
 	}
 
 	public void jump() {

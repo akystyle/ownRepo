@@ -1,19 +1,10 @@
 package myOwn;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-
 public class TileMap {
 
 	int x,y,appWidth, appHeight, tileWidth, tileHeight, speedX, speedY,
 			spreadPosition,speedVariable;
 	String rowOrColumnSpread;
-	BufferedReader fileReader;
-	ArrayList<String> ReadedMap;
 
 	// TODO currently working with only 2D array, need to automate the
 	// dimension detection
@@ -75,31 +66,6 @@ public class TileMap {
 			}
 		}
 		return spreaded;
-	}
-	public void mapLoader(String mapPath){
-		ReadedMap = new ArrayList<String>();
-		while(true){
-		try{
-			File mapFile = new File(mapPath);
-			FileReader myMapFileReader = new FileReader(mapFile);
-			System.out.println(mapFile.getAbsolutePath());
-			System.out.println(mapFile.getCanonicalPath());
-			//fileReader = new BufferedReader();
-			String line = fileReader.readLine();
-			if(line == null){
-				fileReader.close();
-				break;
-			}else if(!line.startsWith("!")){
-				ReadedMap.add(line);
-				System.out.println(line);
-			}
-		}catch (FileNotFoundException e){
-			System.out.println(e.getMessage());
-		}catch(IOException e){
-			System.out.println(e.getMessage());
-		}
-		}
-		
 	}
 	private int findMinRowValue(int[][] temp, int row) {
 		int minValue = 2000;

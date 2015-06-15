@@ -1,6 +1,7 @@
 package akyStudio.framework;
 
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class Animate {
@@ -9,16 +10,16 @@ public class Animate {
 	Image currentFrame;
 	int currentIndex = 0, currentDuration = 1, elapsedFrames = 0;
 
-	public Animate(ArrayList<Image> animationImages, int[] durations) {
+	public Animate(ArrayList<BufferedImage> enemyAnimationImages, int[] durations) {
 		frameList = new ArrayList<AnimationFrames>();
-		for (int i = 0; i < animationImages.size(); i++) {
-			frameList.add(new AnimationFrames(i, animationImages.get(i),
+		for (int i = 0; i < enemyAnimationImages.size(); i++) {
+			frameList.add(new AnimationFrames(i, enemyAnimationImages.get(i),
 					durations[i]));
 			// totalDuration = totalDuration + durations[i];
 		}
 	}
 
-	public Image calculateFrame() {
+	public BufferedImage calculateFrame() {
 		if (elapsedFrames == 60)
 			elapsedFrames = 0;
 		elapsedFrames += 1;

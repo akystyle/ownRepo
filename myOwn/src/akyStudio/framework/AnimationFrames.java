@@ -1,23 +1,23 @@
 package akyStudio.framework;
 
-import java.awt.Image;
+import java.awt.image.BufferedImage;
 
 public class AnimationFrames {
 
-	Image myImage;
+	BufferedImage myImage;
 	int index,imageDuration;
 
-	public AnimationFrames(int x,Image img,int time){
+	public AnimationFrames(int x,BufferedImage img,int time){
 		index = x;
 		myImage = img;
 		imageDuration = time;
 	}
 
-	public Image getMyImage() {
+	public BufferedImage getMyImage() {
 		return myImage;
 	}
 
-	public void setMyImage(Image myImage) {
+	public void setMyImage(BufferedImage myImage) {
 		this.myImage = myImage;
 	}
 
