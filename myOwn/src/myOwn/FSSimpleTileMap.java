@@ -14,6 +14,7 @@ public class FSSimpleTileMap {
 	BufferedReader fileReader;
 	ArrayList<String> ReadedMap;
 	int x=0,y,tileHeight, tileWidth, appHeight, appWidth, speedX;
+	int[][] tilePosition;
 
 	public FSSimpleTileMap(int myAppWidth, int myAppHeight, int myTileWidth,
 			int myTileHeight) {
@@ -29,6 +30,7 @@ public class FSSimpleTileMap {
 		mapPath = mapPath.substring(1);
 		mapPath = mapPath.replace('/', '\\');
 		mapPath = mapPath.replace("%20", " ");
+		int maxWidth=0;
 		try {
 			fileReader = new BufferedReader(new FileReader(mapPath));
 			while (true) {
@@ -38,12 +40,20 @@ public class FSSimpleTileMap {
 					break;
 				} else if (!line.startsWith("!")) {
 					ReadedMap.add(line);
+					maxWidth = Math.max(maxWidth, line.length());
 				}
 			}
 		} catch (FileNotFoundException e) {
 			System.out.println(e);
 		} catch (IOException e) {
 			System.out.println(e);
+		}
+		tilePosition = new int[ReadedMap.size()][maxWidth];
+		for (int row = 0; row < ReadedMap.size(); row++) {
+			char[] tempChar = ReadedMap.get(row).toCharArray();
+			for (int column = 0; column < tempChar.length; column++) {
+				tilePosition[row][column] = column * tileWidth; 
+			}
 		}
 	}
 
@@ -61,26 +71,26 @@ public class FSSimpleTileMap {
 		for (int row = 0; row < ReadedMap.size(); row++) {
 			char[] tempChar = ReadedMap.get(row).toCharArray();
 			for (int column = 0; column < tempChar.length; column++) {
-				x += ((column * tileWidth)+speedX);
+				tilePosition[row][column] += speedX;
 				y = row * tileHeight;
 				switch (tempChar[column]) {
 				case '5':
-					g.drawImage(tileImages.get(0), x, y, myImageObsrvr);
+					g.drawImage(tileImages.get(0), tilePosition[row][column], y, myImageObsrvr);
 					break;
 				case '8':
-					g.drawImage(tileImages.get(1), x, y, myImageObsrvr);
+					g.drawImage(tileImages.get(1), tilePosition[row][column], y, myImageObsrvr);
 					break;
 				case '2':
-					g.drawImage(tileImages.get(2), x, y, myImageObsrvr);
+					g.drawImage(tileImages.get(2), tilePosition[row][column], y, myImageObsrvr);
 					break;
 				case '4':
-					g.drawImage(tileImages.get(3), x, y, myImageObsrvr);
+					g.drawImage(tileImages.get(3), tilePosition[row][column], y, myImageObsrvr);
 					break;
 				case '6':
-					g.drawImage(tileImages.get(4), x, y, myImageObsrvr);
+					g.drawImage(tileImages.get(4), tilePosition[row][column], y, myImageObsrvr);
 					break;
 				case '0':
-					g.drawImage(tileImages.get(5), x, y, myImageObsrvr);
+					g.drawImage(tileImages.get(5), tilePosition[row][column], y, myImageObsrvr);
 					break;
 				}
 			}
