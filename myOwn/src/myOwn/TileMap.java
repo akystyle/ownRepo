@@ -1,10 +1,13 @@
 package myOwn;
 
+import java.awt.Rectangle;
+
 public class TileMap {
 
 	int x,y,appWidth, appHeight, tileWidth, tileHeight, speedX, speedY,
 			spreadPosition,speedVariable;
 	String rowOrColumnSpread;
+	Rectangle tileBounder;
 
 	// TODO currently working with only 2D array, need to automate the
 	// dimension detection

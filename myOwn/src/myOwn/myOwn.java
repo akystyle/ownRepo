@@ -4,6 +4,8 @@ import java.applet.Applet;
 import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
@@ -103,7 +105,7 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 		myTileMapper.mapLoader("/resource/data/level_maps/map1.txt");
 
 		// Initializing Player and his animation
-		myPlayer = new MyPlayer(100, 400);
+		myPlayer = new MyPlayer(100, 337);
 
 		// Initializing Enemies and their respective timers to allow them born
 		heliBoy1 = new Enemy_HeliBoy(550, 40);
@@ -208,35 +210,25 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 		g.drawImage(myBGImage, myBG1.getBgx(), myBG1.getBgy(), this);
 		g.drawImage(myBGImage, myBG2.getBgx(), myBG2.getBgy(), this);
 
-/*		// 2nd Background drawings
-		for (int i = 0; i < myGameGroundSpread1.length; i++) {
-			g.drawImage(myGameGrassTopImage, myGameGroundSpread1[i][0],
-					myGameGroundSpread1[i][1], this);
-			g.drawImage(myGameGrassTopImage, myGameGroundSpread2[i][0],
-					myGameGroundSpread2[i][1], this);
-			g.drawImage(myGameGrassTopImage, myGameGroundSpread3[i][0],
-					myGameGroundSpread3[i][1], this);
-		}
-		for (int i = 0; i < myGameOceanSpread1.length; i++) {
-			g.drawImage(myGameOceanImage, myGameOceanSpread1[i][0],
-					myGameOceanSpread1[i][1], this);
-			g.drawImage(myGameOceanImage, myGameOceanSpread2[i][0],
-					myGameOceanSpread2[i][1], this);
-			g.drawImage(myGameOceanImage, myGameOceanSpread3[i][0],
-					myGameOceanSpread3[i][1], this);
-		}
-*/
 		//Tile Mapping
-		myTileMapper.mapDesigner(myFSSimpleTileMapImages, g, this);
+		tileMapDesigner(g);
 		
 		// Player Drawings
 		if (myPlayer.ducked)
-			g.drawImage(myDuckChar, myPlayer.getX(), myPlayer.getY() - 63, this);
+			g.drawImage(myDuckChar, myPlayer.getX(), myPlayer.getY(), this);
 		else if (myPlayer.getJumping() > 0)
-			g.drawImage(myJumpChar, myPlayer.getX(), myPlayer.getY() - 63, this);
-		else
-			g.drawImage(myCharacter, myPlayer.getX(), myPlayer.getY() - 63,
+			g.drawImage(myJumpChar, myPlayer.getX(), myPlayer.getY(), this);
+		else{
+			g.drawImage(myCharacter, myPlayer.getX(), myPlayer.getY(),
 					this);
+			Rectangle myPlayerBoundRect = myPlayer.getMyPlayerBoundRect();
+			Rectangle leftHandBoundRect = myPlayer.getLeftHandBoundRect();
+			Rectangle righthandBoundRect = myPlayer.getRightHandBoundRect();
+			
+			g.drawRect(myPlayerBoundRect.x, myPlayerBoundRect.y, myPlayerBoundRect.width, myPlayerBoundRect.height);
+			g.drawRect(leftHandBoundRect.x,leftHandBoundRect.y,leftHandBoundRect.width,leftHandBoundRect.height);
+			g.drawRect(righthandBoundRect.x, righthandBoundRect.y,righthandBoundRect.width,righthandBoundRect.height);
+		}
 
 		// Enemy Drawings
 		if (checkBornForEachEnemy(heliBoy1)) {
@@ -254,7 +246,6 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 		}
 
 	}
-
 	@Override
 	public void keyPressed(KeyEvent e) {
 
@@ -279,7 +270,6 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 			bulletShoot();
 		}
 	}
-
 	@Override
 	public void keyReleased(KeyEvent e) {
 		switch (e.getKeyCode()) {
@@ -298,12 +288,50 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 			break;
 		}
 	}
-
 	@Override
 	public void keyTyped(KeyEvent e) {
 
 	}
-
+	public void tileMapDesigner(Graphics g) {
+		ArrayList<String> ReadedMap = myTileMapper.getReadedMap();
+		int[][] tempList = myTileMapper.getTilePosition();
+		for (int row = 0; row < ReadedMap.size(); row++) {
+			char[] tempChar = ReadedMap.get(row).toCharArray();
+			for (int column = 0; column < tempChar.length; column++) {
+				 tempList[row][column] += myTileMapper.getSpeedX();
+				 myTileMapper.setY(row * myTileMapper.getTileHeight());
+				Image tempImage = null;
+				switch (tempChar[column]) {
+				case '5':
+					tempImage = myFSSimpleTileMapImages.get(0);
+					break;
+				case '8':
+					tempImage = myFSSimpleTileMapImages.get(1);
+					break;
+				case '2':
+					tempImage = myFSSimpleTileMapImages.get(2);
+					break;
+				case '4':
+					tempImage = myFSSimpleTileMapImages.get(3);
+					break;
+				case '6':
+					tempImage = myFSSimpleTileMapImages.get(4);
+					break;
+				case '0':
+					tempImage = myFSSimpleTileMapImages.get(5);
+					break;
+				}
+				g.drawImage(tempImage,tempList[row][column], myTileMapper.getY(),this);
+				if(tempChar[column] != ' '){
+					 myTileMapper.getTileBounder().setRect(column*myTileMapper.getTileWidth(),row*myTileMapper.getTileWidth(), myTileMapper.getTileWidth(), myTileMapper.getTileHeight());
+					 
+					 //Draw Bounding Rectangle for TileMap 
+					 //g.drawRect(myTileMapper.getTilePosition()[row][column], myTileMapper.getY(), myTileMapper.getTileWidth(), myTileMapper.getTileHeight());
+				}
+			}
+		}
+		myTileMapper.setTilePosition(tempList);
+	}
 	public void startNextEnemyCounter(Enemy_HeliBoy tempEnemy) {
 		gameTimer.schedule(new TimerTask() {
 
@@ -315,11 +343,9 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 		}, 5000);
 
 	}
-
 	public boolean checkBornForEachEnemy(Enemy_HeliBoy tempEnemy) {
 		return tempEnemy.readyToBorn;
 	}
-
 	private BufferedImage getBufferedImageResource(String ImageName) {
 		try {
 			return ImageIO.read(this.getClass().getResource(
@@ -329,7 +355,6 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 		}
 		return null;
 	}
-
 	private ArrayList<BufferedImage> animate(String relativePath) {
 
 		File resourceDir = new File(relativePath);
@@ -344,7 +369,6 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 					tempList.add(ImageIO.read(this.getClass().getResource(
 							"/" + relativePath + "/" + imageList[i].getName())));
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}

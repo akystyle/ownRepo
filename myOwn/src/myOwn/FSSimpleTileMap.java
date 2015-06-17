@@ -1,8 +1,6 @@
 package myOwn;
 
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
+import java.awt.Rectangle;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -15,6 +13,7 @@ public class FSSimpleTileMap {
 	ArrayList<String> ReadedMap;
 	int x=0,y,tileHeight, tileWidth, appHeight, appWidth, speedX;
 	int[][] tilePosition;
+	Rectangle tileBounder;
 
 	public FSSimpleTileMap(int myAppWidth, int myAppHeight, int myTileWidth,
 			int myTileHeight) {
@@ -22,6 +21,7 @@ public class FSSimpleTileMap {
 		appHeight = myAppHeight;
 		tileWidth = myTileWidth;
 		tileHeight = myTileHeight;
+		tileBounder = new Rectangle();
 	}
 
 	public void mapLoader(String mapPath) {
@@ -66,34 +66,91 @@ public class FSSimpleTileMap {
 			speedX = 4;
 	}
 
-	public void mapDesigner(ArrayList<BufferedImage> tileImages, Graphics g,
-			ImageObserver myImageObsrvr) {
-		for (int row = 0; row < ReadedMap.size(); row++) {
-			char[] tempChar = ReadedMap.get(row).toCharArray();
-			for (int column = 0; column < tempChar.length; column++) {
-				tilePosition[row][column] += speedX;
-				y = row * tileHeight;
-				switch (tempChar[column]) {
-				case '5':
-					g.drawImage(tileImages.get(0), tilePosition[row][column], y, myImageObsrvr);
-					break;
-				case '8':
-					g.drawImage(tileImages.get(1), tilePosition[row][column], y, myImageObsrvr);
-					break;
-				case '2':
-					g.drawImage(tileImages.get(2), tilePosition[row][column], y, myImageObsrvr);
-					break;
-				case '4':
-					g.drawImage(tileImages.get(3), tilePosition[row][column], y, myImageObsrvr);
-					break;
-				case '6':
-					g.drawImage(tileImages.get(4), tilePosition[row][column], y, myImageObsrvr);
-					break;
-				case '0':
-					g.drawImage(tileImages.get(5), tilePosition[row][column], y, myImageObsrvr);
-					break;
-				}
-			}
-		}
+	public BufferedReader getFileReader() {
+		return fileReader;
+	}
+
+	public void setFileReader(BufferedReader fileReader) {
+		this.fileReader = fileReader;
+	}
+
+	public ArrayList<String> getReadedMap() {
+		return ReadedMap;
+	}
+
+	public void setReadedMap(ArrayList<String> readedMap) {
+		ReadedMap = readedMap;
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public void setY(int y) {
+		this.y = y;
+	}
+
+	public int getTileHeight() {
+		return tileHeight;
+	}
+
+	public void setTileHeight(int tileHeight) {
+		this.tileHeight = tileHeight;
+	}
+
+	public int getTileWidth() {
+		return tileWidth;
+	}
+
+	public void setTileWidth(int tileWidth) {
+		this.tileWidth = tileWidth;
+	}
+
+	public int getAppHeight() {
+		return appHeight;
+	}
+
+	public void setAppHeight(int appHeight) {
+		this.appHeight = appHeight;
+	}
+
+	public int getAppWidth() {
+		return appWidth;
+	}
+
+	public void setAppWidth(int appWidth) {
+		this.appWidth = appWidth;
+	}
+
+	public int getSpeedX() {
+		return speedX;
+	}
+
+	public void setSpeedX(int speedX) {
+		this.speedX = speedX;
+	}
+
+	public int[][] getTilePosition() {
+		return tilePosition;
+	}
+
+	public void setTilePosition(int[][] tilePosition) {
+		this.tilePosition = tilePosition;
+	}
+
+	public Rectangle getTileBounder() {
+		return tileBounder;
+	}
+
+	public void setTileBounder(Rectangle tileBounder) {
+		this.tileBounder = tileBounder;
 	}
 }
