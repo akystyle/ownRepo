@@ -64,8 +64,18 @@ public class FSSimpleTileMap {
 			speedX = playerSpeedX;
 		else
 			speedX = 4;
+		
+		
 	}
-
+	public void collided(Rectangle myPlayerBoundRect,Rectangle leftHandBoundRect,Rectangle rightHandBoundRect){
+		if(tileBounder.intersects(myPlayerBoundRect))
+			System.out.println("Body Collided");
+		else if(tileBounder.intersects(leftHandBoundRect))
+			System.out.println("Player Left Hand Collided");
+		else if(tileBounder.intersects(rightHandBoundRect))
+			System.out.println("Player Right Hand Collided");
+	}
+	
 	public BufferedReader getFileReader() {
 		return fileReader;
 	}

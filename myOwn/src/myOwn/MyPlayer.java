@@ -12,8 +12,9 @@ public class MyPlayer {
 	public MyPlayer(int initx, int inity) {
 		x = initx;
 		y = inity;
-		myPlayerBoundRect = leftHandBoundRect = rightHandBoundRect = new Rectangle(
-				0, 0, 0, 0);
+		myPlayerBoundRect = new Rectangle(0, 0, 0, 0);
+		leftHandBoundRect = new Rectangle(0, 0, 0, 0);
+		rightHandBoundRect = new Rectangle(0, 0, 0, 0);
 		updateBodyBounder();
 	}
 
@@ -60,27 +61,16 @@ public class MyPlayer {
 	}
 
 	public void moveLeft() {
-
 		speedx = -6;
-		/*
-		 * if (speedx <= -10) speedx = -12;
-		 */
 	}
 
 	public void moveRight() {
 		speedx = 6;
-		/*
-		 * if (speedx >= 10) speedx = 12;
-		 */
 	}
-
 	public void jump() {
-
-		if (jumping == 0) {
+		if (jumping == 0)
 			jumping = 1;
-		}
 	}
-
 	private void updateBodyBounder() {
 		if (jumping == 0 && ducked == false) {
 			bodyBoundHeight = 125;

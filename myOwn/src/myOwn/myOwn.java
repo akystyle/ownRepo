@@ -168,6 +168,8 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 			
 			myTileMapper.calculatePosition(myPlayer.getSpeedx());
 
+			myTileMapper.collided(myPlayer.getMyPlayerBoundRect(),myPlayer.getLeftHandBoundRect(),myPlayer.getRightHandBoundRect());
+			
 			if (myPlayerBullet.visible)
 				myPlayerBullet.calculatePosition();
 			if (checkBornForEachEnemy(heliBoy1)) {
