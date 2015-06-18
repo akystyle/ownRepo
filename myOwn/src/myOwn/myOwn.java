@@ -4,7 +4,6 @@ import java.applet.Applet;
 import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -40,7 +39,7 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 	ArrayList<BufferedImage> myPlayerAnimationImages, enemyAnimationImages,myFSSimpleTileMapImages;
 	Animate myPlayerAnimation, enemyAnimation;
 	FSSimpleTileMap myTileMapper;
-
+	
 	@Override
 	public void init() {
 
@@ -130,18 +129,18 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 
 	private void bulletShoot() {
 		if (myPlayer.ducked) {
-			myPlayerBullet.setProjectileX(myPlayer.getX() + 95);
-			myPlayerBullet.setProjectileY(myPlayer.getY() + 10);
+			myPlayerBullet.setProjectileX(myPlayer.getX() + 90);
+			myPlayerBullet.setProjectileY(myPlayer.getY() + 65);
 			myPlayerBullet.setJumpShoot(false);
 		}
 
 		else if (myPlayer.getJumping() > 0) {
 			myPlayerBullet.setProjectileX(myPlayer.getX() + 110);
-			myPlayerBullet.setProjectileY(myPlayer.getY() - 41);
+			myPlayerBullet.setProjectileY(myPlayer.getY() + 12);
 			myPlayerBullet.setJumpShoot(true);
 		} else {
 			myPlayerBullet.setProjectileX(myPlayer.getX() + 110);
-			myPlayerBullet.setProjectileY(myPlayer.getY() - 23);
+			myPlayerBullet.setProjectileY(myPlayer.getY() + 35);
 			myPlayerBullet.setJumpShoot(false);
 		}
 		myPlayerBullet.visible = true;
@@ -173,9 +172,11 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 			myPlayer.calculatePosition();
 			myCharacter = myPlayerAnimation.calculateFrame();
 			
+			myTileMapper.calculatePosition(myPlayer.getSpeedx());
+			
 			myTileMapper.collided();
 			
-			myTileMapper.calculatePosition(myPlayer.getSpeedx());
+			//myTileMapper.calculatePosition(myPlayer.getSpeedx());
 			
 			if (myPlayerBullet.visible)
 				myPlayerBullet.calculatePosition();
@@ -220,6 +221,7 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 		g.drawImage(myBGImage, myBG2.getBgx(), myBG2.getBgy(), this);
 
 		//Tile Mapping
+		//myTileMapper.calculatePosition(myPlayer.getSpeedx(), g); 				// For verification of the bounding rectangle by drawing it
 		tileMapDesigner(g);
 		
 		// Player Drawings
@@ -301,9 +303,8 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 		for (int row = 0; row < ReadedMap.size(); row++) {
 			char[] tempChar = ReadedMap.get(row).toCharArray();
 			for (int column = 0; column < tempChar.length; column++) {
-				 tempList[row][column] += myTileMapper.getSpeedX();
-				 myTileMapper.setY(row * myTileMapper.getTileHeight());
-				Image tempImage = null;
+				myTileMapper.setY(row*myTileMapper.getTileHeight());
+				BufferedImage tempImage = null;
 				switch (tempChar[column]) {
 				case '5':
 					tempImage = myFSSimpleTileMapImages.get(0);
@@ -323,17 +324,13 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 				case '0':
 					tempImage = myFSSimpleTileMapImages.get(5);
 					break;
+				case ' ':
+					 					
+					break;
 				}
 				g.drawImage(tempImage,tempList[row][column], myTileMapper.getY(),this);
-				if(tempChar[column] != ' '){
-					 myTileMapper.getTileBounder().setRect(tempList[row][column],myTileMapper.getY(), myTileMapper.getTileWidth(), myTileMapper.getTileHeight());
-					 myTileMapper.collided();
-					 //Draw Bounding Rectangle for TileMap 
-					 //g.drawRect((int)myTileMapper.getTileBounder().getX(), (int)myTileMapper.getTileBounder().getY(), (int)myTileMapper.getTileBounder().getWidth(), (int)myTileMapper.getTileBounder().getHeight());
-				}
 			}
 		}
-		myTileMapper.setTilePosition(tempList);
 	}
 @SuppressWarnings("unused")
 private void drawPlayerBound(Graphics g){

@@ -6,7 +6,7 @@ public class MyPlayer {
 
 	int bodyBoundX, bodyBoundY, bodyBoundWidth, bodyBoundHeight;
 	int x, y, speedx = 0, speedy = -3, jumping = 0;
-	boolean ducked;
+	boolean ducked, canMoveRight, canMoveLeft;
 	Rectangle myPlayerBoundRect, leftHandBoundRect, rightHandBoundRect;
 
 	public MyPlayer(int initx, int inity) {
@@ -15,25 +15,29 @@ public class MyPlayer {
 		myPlayerBoundRect = new Rectangle(0, 0, 0, 0);
 		leftHandBoundRect = new Rectangle(0, 0, 0, 0);
 		rightHandBoundRect = new Rectangle(0, 0, 0, 0);
+		canMoveLeft = true;
+		canMoveRight = true;
 		updateBodyBounder();
 	}
 
 	public void calculatePosition() {
-		if (x <= 1) {
-			x = 1;
-			if (speedx < 0)
-				MyBg.bgSpeedx = 2;
-			else
-				x = x + speedx;
-		} else if (x >= 300) {
-			x = 300;
-			if (speedx > 0)
+
+		if (speedx > 0) {
+			if (x >= 380) {
+				x = 380;
 				MyBg.bgSpeedx = -2;
-			else
-				x = x + speedx;
+			} else {
+				movement();
+			}
+		} else if (speedx < 0) {
+			if (x <= 1) {
+				x = 1;
+				MyBg.bgSpeedx = 2;
+			} else {
+				movement();
+			}
 		} else {
 			MyBg.bgSpeedx = 0;
-			x = x + speedx;
 		}
 
 		if (jumping == 1) {
@@ -48,6 +52,17 @@ public class MyPlayer {
 		updateBodyBounder();
 	}
 
+	private void movement() {
+		if (speedx > 0 && canMoveRight){
+			System.out.println(canMoveRight + " : And Speed is 6");
+			x += speedx;
+		}
+		else if (speedx < 0 && canMoveLeft){
+			System.out.println(canMoveRight + " : And Speed is -6");
+			x += speedx;
+		}
+	}
+
 	public void moveDown() {
 	}
 
@@ -60,17 +75,25 @@ public class MyPlayer {
 		MyBg.bgSpeedx = 0;
 	}
 
+	public void avoidCollisionRevertMovement() {
+		x -= speedx;
+	}
+
 	public void moveLeft() {
-		speedx = -6;
+		if (canMoveLeft)
+			speedx = -6;
 	}
 
 	public void moveRight() {
-		speedx = 6;
+		if (canMoveRight)
+			speedx = 6;
 	}
+
 	public void jump() {
 		if (jumping == 0)
 			jumping = 1;
 	}
+
 	private void updateBodyBounder() {
 		if (jumping == 0 && ducked == false) {
 			bodyBoundHeight = 125;
@@ -159,6 +182,54 @@ public class MyPlayer {
 
 	public void setRightHandBoundRect(Rectangle rightHandBoundRect) {
 		this.rightHandBoundRect = rightHandBoundRect;
+	}
+
+	public int getBodyBoundX() {
+		return bodyBoundX;
+	}
+
+	public void setBodyBoundX(int bodyBoundX) {
+		this.bodyBoundX = bodyBoundX;
+	}
+
+	public int getBodyBoundY() {
+		return bodyBoundY;
+	}
+
+	public void setBodyBoundY(int bodyBoundY) {
+		this.bodyBoundY = bodyBoundY;
+	}
+
+	public int getBodyBoundWidth() {
+		return bodyBoundWidth;
+	}
+
+	public void setBodyBoundWidth(int bodyBoundWidth) {
+		this.bodyBoundWidth = bodyBoundWidth;
+	}
+
+	public int getBodyBoundHeight() {
+		return bodyBoundHeight;
+	}
+
+	public void setBodyBoundHeight(int bodyBoundHeight) {
+		this.bodyBoundHeight = bodyBoundHeight;
+	}
+
+	public boolean isCanMoveRight() {
+		return canMoveRight;
+	}
+
+	public void setCanMoveRight(boolean canMoveRight) {
+		this.canMoveRight = canMoveRight;
+	}
+
+	public boolean isCanMoveLeft() {
+		return canMoveLeft;
+	}
+
+	public void setCanMoveLeft(boolean canMoveLeft) {
+		this.canMoveLeft = canMoveLeft;
 	}
 
 }
