@@ -28,7 +28,8 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 
 	final int appWidth = 800, appHeight = 480;
 
-	MyPlayer myPlayer;
+	static MyPlayer myPlayer;
+	Rectangle myPlayerBoundRect, leftHandBoundRect, rightHandBoundRect;
 	static MyBg myBG1, myBG2, myBG3;
 	Graphics myGraphics;
 	BufferedImage myImage, myCharacter, myBGImage, myDuckChar, myJumpChar,
@@ -70,7 +71,7 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 		// Grabbing Animation resources
 		myPlayerAnimationImages = animate("resource/images/characterAnimation");
 		enemyAnimationImages = animate("resource/images/enemyAnimation");
-
+				
 		// Initializing Player Animation
 		int[] myPlayerAnimationdurations = { 25, 10, 15, 10 };
 		myPlayerAnimation = new Animate(myPlayerAnimationImages,
@@ -105,8 +106,14 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 		myTileMapper.mapLoader("/resource/data/level_maps/map1.txt");
 
 		// Initializing Player and his animation
-		myPlayer = new MyPlayer(100, 337);
+		myPlayer = new MyPlayer(100, 315);
 
+		//Adding reference to Player Bounds
+		myPlayerBoundRect = myPlayer.getMyPlayerBoundRect();
+		leftHandBoundRect = myPlayer.getLeftHandBoundRect();
+		rightHandBoundRect = myPlayer.getRightHandBoundRect();
+
+		
 		// Initializing Enemies and their respective timers to allow them born
 		heliBoy1 = new Enemy_HeliBoy(550, 40);
 		heliBoy2 = new Enemy_HeliBoy(570, 250);
@@ -166,9 +173,9 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 			myPlayer.calculatePosition();
 			myCharacter = myPlayerAnimation.calculateFrame();
 			
+			myTileMapper.collided();
+			
 			myTileMapper.calculatePosition(myPlayer.getSpeedx());
-
-			myTileMapper.collided(myPlayer.getMyPlayerBoundRect(),myPlayer.getLeftHandBoundRect(),myPlayer.getRightHandBoundRect());
 			
 			if (myPlayerBullet.visible)
 				myPlayerBullet.calculatePosition();
@@ -223,13 +230,7 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 		else{
 			g.drawImage(myCharacter, myPlayer.getX(), myPlayer.getY(),
 					this);
-			Rectangle myPlayerBoundRect = myPlayer.getMyPlayerBoundRect();
-			Rectangle leftHandBoundRect = myPlayer.getLeftHandBoundRect();
-			Rectangle righthandBoundRect = myPlayer.getRightHandBoundRect();
-			
-			g.drawRect(myPlayerBoundRect.x, myPlayerBoundRect.y, myPlayerBoundRect.width, myPlayerBoundRect.height);
-			g.drawRect(leftHandBoundRect.x,leftHandBoundRect.y,leftHandBoundRect.width,leftHandBoundRect.height);
-			g.drawRect(righthandBoundRect.x, righthandBoundRect.y,righthandBoundRect.width,righthandBoundRect.height);
+			//drawPlayerBound(g);												//For drawing tiles of the player collision detection bounds
 		}
 
 		// Enemy Drawings
@@ -325,15 +326,22 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 				}
 				g.drawImage(tempImage,tempList[row][column], myTileMapper.getY(),this);
 				if(tempChar[column] != ' '){
-					 myTileMapper.getTileBounder().setRect(column*myTileMapper.getTileWidth(),row*myTileMapper.getTileWidth(), myTileMapper.getTileWidth(), myTileMapper.getTileHeight());
-					 
+					 myTileMapper.getTileBounder().setRect(tempList[row][column],myTileMapper.getY(), myTileMapper.getTileWidth(), myTileMapper.getTileHeight());
+					 myTileMapper.collided();
 					 //Draw Bounding Rectangle for TileMap 
-					 //g.drawRect(myTileMapper.getTilePosition()[row][column], myTileMapper.getY(), myTileMapper.getTileWidth(), myTileMapper.getTileHeight());
+					 //g.drawRect((int)myTileMapper.getTileBounder().getX(), (int)myTileMapper.getTileBounder().getY(), (int)myTileMapper.getTileBounder().getWidth(), (int)myTileMapper.getTileBounder().getHeight());
 				}
 			}
 		}
 		myTileMapper.setTilePosition(tempList);
 	}
+@SuppressWarnings("unused")
+private void drawPlayerBound(Graphics g){
+
+	g.drawRect(myPlayerBoundRect.x, myPlayerBoundRect.y, myPlayerBoundRect.width, myPlayerBoundRect.height);
+	g.drawRect(leftHandBoundRect.x,leftHandBoundRect.y,leftHandBoundRect.width,leftHandBoundRect.height);
+	g.drawRect(rightHandBoundRect.x, rightHandBoundRect.y,rightHandBoundRect.width,rightHandBoundRect.height);
+}
 	public void startNextEnemyCounter(Enemy_HeliBoy tempEnemy) {
 		gameTimer.schedule(new TimerTask() {
 

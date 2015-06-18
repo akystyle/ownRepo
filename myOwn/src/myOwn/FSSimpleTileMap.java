@@ -67,12 +67,12 @@ public class FSSimpleTileMap {
 		
 		
 	}
-	public void collided(Rectangle myPlayerBoundRect,Rectangle leftHandBoundRect,Rectangle rightHandBoundRect){
-		if(tileBounder.intersects(myPlayerBoundRect))
+	public void collided(){
+		if(tileBounder.intersects(myOwn.myPlayer.getMyPlayerBoundRect()))
 			System.out.println("Body Collided");
-		else if(tileBounder.intersects(leftHandBoundRect))
+		if(tileBounder.intersects(myOwn.myPlayer.getLeftHandBoundRect()))
 			System.out.println("Player Left Hand Collided");
-		else if(tileBounder.intersects(rightHandBoundRect))
+		if(tileBounder.intersects(myOwn.myPlayer.getRightHandBoundRect()))
 			System.out.println("Player Right Hand Collided");
 	}
 	

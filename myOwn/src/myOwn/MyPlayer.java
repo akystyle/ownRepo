@@ -38,11 +38,11 @@ public class MyPlayer {
 
 		if (jumping == 1) {
 			y = y + speedy;
-			if (y <= 237)
+			if (y <= 215)
 				jumping = 2;
 		} else if (jumping == 2) {
 			y = y - speedy;
-			if (y >= 337)
+			if (y >= 315)
 				jumping = 0;
 		}
 		updateBodyBounder();
