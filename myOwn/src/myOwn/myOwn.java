@@ -38,7 +38,7 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 	PlayerBullet myPlayerBullet;
 	ArrayList<BufferedImage> myPlayerAnimationImages, enemyAnimationImages,myFSSimpleTileMapImages;
 	Animate myPlayerAnimation, enemyAnimation;
-	FSSimpleTileMap myTileMapper;
+	static FSSimpleTileMap myTileMapper;
 	
 	@Override
 	public void init() {
@@ -173,8 +173,6 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 			myCharacter = myPlayerAnimation.calculateFrame();
 			
 			myTileMapper.calculatePosition(myPlayer.getSpeedx());
-			
-			myTileMapper.collided();
 			
 			//myTileMapper.calculatePosition(myPlayer.getSpeedx());
 			

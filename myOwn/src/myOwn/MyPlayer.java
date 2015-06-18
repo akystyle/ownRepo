@@ -1,6 +1,7 @@
 package myOwn;
 
 import java.awt.Rectangle;
+import java.awt.geom.Line2D;
 
 public class MyPlayer {
 
@@ -61,8 +62,56 @@ public class MyPlayer {
 			System.out.println(canMoveRight + " : And Speed is -6");
 			x += speedx;
 		}
+		collided();
 	}
+	public void collided(){
+		for (int row = 0; row < myOwn.myTileMapper.tileBounder.length; row++) {
+			for (int column = 0; column < myOwn.myTileMapper.tileBounder[0].length; column++) {
+				
+				
+				if(myPlayerBoundRect.intersects(myOwn.myTileMapper.tileBounder[row][column])){
+					stopMovingHorizontally();
+					avoidCollisionRevertMovement();
+					
+					String collisionSide = whichSidecollided(myPlayerBoundRect,myOwn.myTileMapper.tileBounder[row][column]);
+					System.out.println(collisionSide);
+					if(collisionSide == "right"){
+						canMoveRight = true;
+						canMoveLeft = false;
+					}else if(collisionSide == "left"){
+						canMoveRight = false;
+						canMoveLeft = true;
+					}
+				}else{
+					System.out.println("Setting both true");
+					canMoveRight = true;
+					canMoveLeft = true;
+				}
+					
+				if(leftHandBoundRect.intersects(myOwn.myTileMapper.tileBounder[row][column])){
+					//System.out.println("Player Left Hand Collided");
+				}
+				if(rightHandBoundRect.intersects(myOwn.myTileMapper.tileBounder[row][column])){
+					//System.out.println("Player Right Hand Collided");
+				}
+				
+			}
+		}
 
+	}
+	
+	private String whichSidecollided(Rectangle rect,Rectangle rect2) {
+		Line2D rightSide = new Line2D.Float((rect.x+rect.width),rect.y,rect.x+rect.width,rect.y+rect.height);
+		Line2D leftSide = new Line2D.Float(rect.x,rect.y,rect.x,rect.y+rect.height);
+		if(rightSide.intersects(rect2))
+			return "right";
+		else if(leftSide.intersects(rect2))
+			return "left";
+		else
+			return null;
+	}
+	
+	
 	public void moveDown() {
 	}
 
