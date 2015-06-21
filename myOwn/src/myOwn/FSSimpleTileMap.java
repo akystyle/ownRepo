@@ -11,7 +11,7 @@ public class FSSimpleTileMap {
 
 	BufferedReader fileReader;
 	ArrayList<String> ReadedMap;
-	int x=0,y,tileHeight, tileWidth, appHeight, appWidth, speedX;
+	int x = 0, y, tileHeight, tileWidth, appHeight, appWidth, speedX;
 	int[][] tilePosition;
 	Rectangle[][] tileBounder;
 
@@ -23,13 +23,14 @@ public class FSSimpleTileMap {
 		tileHeight = myTileHeight;
 		tileBounder = null;
 	}
+
 	public void mapLoader(String mapPath) {
 		ReadedMap = new ArrayList<String>();
 		mapPath = this.getClass().getResource(mapPath).getPath();
 		mapPath = mapPath.substring(1);
 		mapPath = mapPath.replace('/', '\\');
 		mapPath = mapPath.replace("%20", " ");
-		int maxWidth=0;
+		int maxWidth = 0;
 		try {
 			fileReader = new BufferedReader(new FileReader(mapPath));
 			while (true) {
@@ -49,15 +50,26 @@ public class FSSimpleTileMap {
 		}
 		tilePosition = new int[ReadedMap.size()][maxWidth];
 		tileBounder = new Rectangle[ReadedMap.size()][maxWidth];
+
+		for (int row = 0; row < tileBounder.length; row++) {
+			for (int column = 0; column < tileBounder[row].length; column++) {
+				tileBounder[row][column] = new Rectangle(0, 0, 1, 1);
+			}
+		}
+
 		for (int row = 0; row < ReadedMap.size(); row++) {
 			char[] tempChar = ReadedMap.get(row).toCharArray();
 			for (int column = 0; column < tempChar.length; column++) {
+				// System.out.println(tempChar.length);
 				tilePosition[row][column] = column * tileWidth;
-				if(tempChar[column] != ' ')
-				tileBounder[row][column].setRect(column*tileWidth, y, tileWidth, tileHeight);
+				if (tempChar[column] != ' ')
+					tileBounder[row][column].setRect(column * tileWidth, row
+							* tileHeight, tileWidth, tileHeight);
 			}
 		}
+
 	}
+
 	public void calculatePosition(int playerSpeedX) {
 		if (playerSpeedX > 0)
 			speedX = -4;
@@ -69,11 +81,14 @@ public class FSSimpleTileMap {
 		for (int row = 0; row < ReadedMap.size(); row++) {
 			char[] tempChar = ReadedMap.get(row).toCharArray();
 			for (int column = 0; column < tempChar.length; column++) {
-				 tilePosition[row][column] += speedX;
-				 y = row * tileHeight;
+				tilePosition[row][column] += speedX;
+				y = row * tileHeight;
+				if (tempChar[column] != ' ')
+					tileBounder[row][column].setRect(tilePosition[row][column], y, tileWidth, tileHeight);
 			}
 		}
 	}
+
 	public BufferedReader getFileReader() {
 		return fileReader;
 	}
@@ -149,12 +164,15 @@ public class FSSimpleTileMap {
 	public int[][] getTilePosition() {
 		return tilePosition;
 	}
+
 	public void setTilePosition(int[][] tilePosition) {
 		this.tilePosition = tilePosition;
 	}
+
 	public Rectangle[][] getTileBounder() {
 		return tileBounder;
 	}
+
 	public void setTileBounder(Rectangle[][] tileBounder) {
 		this.tileBounder = tileBounder;
 	}

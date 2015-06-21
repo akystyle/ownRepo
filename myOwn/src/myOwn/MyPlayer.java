@@ -27,14 +27,18 @@ public class MyPlayer {
 			if (x >= 380) {
 				x = 380;
 				MyBg.bgSpeedx = -2;
+//				System.out.println("Maximum Character Right limit");
 			} else {
+//				System.out.println("Should get here");
 				movement();
 			}
 		} else if (speedx < 0) {
 			if (x <= 1) {
 				x = 1;
 				MyBg.bgSpeedx = 2;
+//				System.out.println("Minimum character left limit");
 			} else {
+//				System.out.println("Should get here");
 				movement();
 			}
 		} else {
@@ -55,26 +59,26 @@ public class MyPlayer {
 
 	private void movement() {
 		if (speedx > 0 && canMoveRight){
-			System.out.println(canMoveRight + " : And Speed is 6");
+//			System.out.println(canMoveRight + " : And Speed is 6");
 			x += speedx;
 		}
 		else if (speedx < 0 && canMoveLeft){
-			System.out.println(canMoveRight + " : And Speed is -6");
+//			System.out.println(canMoveLeft + " : And Speed is -6");
 			x += speedx;
 		}
 		collided();
 	}
 	public void collided(){
 		for (int row = 0; row < myOwn.myTileMapper.tileBounder.length; row++) {
-			for (int column = 0; column < myOwn.myTileMapper.tileBounder[0].length; column++) {
-				
+			for (int column = 0; column < myOwn.myTileMapper.tileBounder[row].length; column++) {
+//				System.out.println("Got into Collision loop " + myOwn.myTileMapper.tileBounder[row].length + " " + row);
 				
 				if(myPlayerBoundRect.intersects(myOwn.myTileMapper.tileBounder[row][column])){
 					stopMovingHorizontally();
 					avoidCollisionRevertMovement();
 					
 					String collisionSide = whichSidecollided(myPlayerBoundRect,myOwn.myTileMapper.tileBounder[row][column]);
-					System.out.println(collisionSide);
+//					System.out.println(collisionSide);
 					if(collisionSide == "right"){
 						canMoveRight = true;
 						canMoveLeft = false;
@@ -83,7 +87,7 @@ public class MyPlayer {
 						canMoveLeft = true;
 					}
 				}else{
-					System.out.println("Setting both true");
+					//System.out.println("Setting both true");
 					canMoveRight = true;
 					canMoveLeft = true;
 				}

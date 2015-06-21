@@ -327,6 +327,7 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 					break;
 				}
 				g.drawImage(tempImage,tempList[row][column], myTileMapper.getY(),this);
+				g.drawRect(myTileMapper.getTileBounder()[row][column].x, myTileMapper.getTileBounder()[row][column].y, myTileMapper.getTileBounder()[row][column].width, myTileMapper.getTileBounder()[row][column].height);
 			}
 		}
 	}
