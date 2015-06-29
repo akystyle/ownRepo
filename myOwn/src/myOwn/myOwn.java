@@ -105,7 +105,7 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 		myTileMapper.mapLoader("/resource/data/level_maps/map1.txt");
 
 		// Initializing Player and his animation
-		myPlayer = new MyPlayer(100, 315);
+		myPlayer = new MyPlayer(100, 215);
 
 		//Adding reference to Player Bounds
 		myPlayerBoundRect = myPlayer.getMyPlayerBoundRect();

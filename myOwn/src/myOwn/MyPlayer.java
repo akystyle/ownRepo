@@ -47,11 +47,11 @@ public class MyPlayer {
 
 		if (jumping == 1) {
 			y = y + speedy;
-			if (y <= 215)
+			if (y <= 115)
 				jumping = 2;
 		} else if (jumping == 2) {
 			y = y - speedy;
-			if (y >= 315)
+			if (y >= 215)
 				jumping = 0;
 		}
 		updateBodyBounder();
@@ -74,27 +74,23 @@ public class MyPlayer {
 				// System.out.println("Got into Collision loop " +
 				// myOwn.myTileMapper.tileBounder[row].length + " " + row);
 
-				if (myPlayerBoundRect
-						.intersects(myOwn.myTileMapper.tileBounder[row][column])) {
-					System.out.println("Collision detected");
 					String collisionSide = whichSidecollided(myPlayerBoundRect,
 							myOwn.myTileMapper.tileBounder[row][column]);
-					// System.out.println(collisionSide);
+				 System.out.println(collisionSide);
 
-					if (collisionSide == "right") {
-						canMoveRight = false;
-						canMoveLeft = false;
+					if (collisionSide == null) {
+						canMoveRight = true;
+						canMoveLeft = true;
 					} else if (collisionSide == "left") {
-						canMoveRight = false;
+						canMoveRight = true;
 						canMoveLeft = false;
+						return true;
+					}else if(collisionSide == "right"){
+						canMoveRight = false;
+						canMoveLeft = true;
+						return true;
 					}
-					return true;
-				} else {
-					// System.out.println("Setting both true");
-					canMoveRight = true;
-					canMoveLeft = true;
-				}
-
+					
 				if (leftHandBoundRect
 						.intersects(myOwn.myTileMapper.tileBounder[row][column])) {
 					// System.out.println("Player Left Hand Collided");
@@ -112,7 +108,7 @@ public class MyPlayer {
 	}
 
 	private String whichSidecollided(Rectangle rect, Rectangle rect2) {
-		Line2D rightSide = new Line2D.Float((rect.x + rect.width), rect.y,
+		Line2D rightSide = new Line2D.Float(rect.x + rect.width, rect.y,
 				rect.x + rect.width, rect.y + rect.height);
 		Line2D leftSide = new Line2D.Float(rect.x, rect.y, rect.x, rect.y
 				+ rect.height);
