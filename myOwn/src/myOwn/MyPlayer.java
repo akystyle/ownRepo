@@ -58,7 +58,9 @@ public class MyPlayer {
 	}
 
 	private void movement() {
-		if ( (!collided() && speedx> 0 && canMoveRight) || (!collided() && speedx < 0 && canMoveLeft) ) {
+		collided();
+		if ( (speedx> 0 && canMoveRight == true) || (speedx < 0 && canMoveLeft == true) ) {
+
 			x += speedx;
 		}
 //			else{
@@ -69,8 +71,8 @@ public class MyPlayer {
 	public boolean collided() {
 		for (int row = 0; row < myOwn.myTileMapper.tileBounder.length; row++) {
 			for (int column = 0; column < myOwn.myTileMapper.tileBounder[row].length; column++) {
-				// System.out.println("Got into Collision loop " +
-				// myOwn.myTileMapper.tileBounder[row].length + " " + row);
+// System.out.println("Got into Collision loop " +
+// myOwn.myTileMapper.tileBounder[row].length + " " + row);
 
 //					String collisionSide = whichSidecollided(direction, myPlayerBoundRect,
 //							myOwn.myTileMapper.tileBounder[row][column]);
@@ -88,11 +90,12 @@ public class MyPlayer {
 //						canMoveLeft = true;
 //						return true;
 //					}
-//					
+				
 					if(myPlayerBoundRect.intersects(myOwn.myTileMapper.tileBounder[row][column])){
 						canMoveLeft = false;
 						canMoveRight = false;
-						System.out.println(canMoveLeft + " " + canMoveRight);
+						System.out.println(speedx + " " + canMoveLeft + " " + canMoveRight);
+						stopMovingHorizontally();
 						return true;
 					}
 					
@@ -135,13 +138,18 @@ public class MyPlayer {
 	}
 
 	public void moveLeft() {
-		if (canMoveLeft)
+		collided();
+		if (canMoveLeft && !collided())
 			speedx = -6;
+		else
+			speedx = 0;
 	}
 
 	public void moveRight() {
-		if (canMoveRight)
+		if (canMoveRight && !collided())
 			speedx = 6;
+		else
+			speedx = 0;
 	}
 
 	public void jump() {
