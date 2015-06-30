@@ -230,7 +230,7 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 		else{
 			g.drawImage(myCharacter, myPlayer.getX(), myPlayer.getY(),
 					this);
-			//drawPlayerBound(g);												//For drawing tiles of the player collision detection bounds
+			drawPlayerBound(g);												//For drawing tiles of the player collision detection bounds
 		}
 
 		// Enemy Drawings

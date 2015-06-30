@@ -58,14 +58,12 @@ public class MyPlayer {
 	}
 
 	private void movement() {
-		if (!collided() && speedx> 0 && canMoveRight) {
+		if ( (!collided() && speedx> 0 && canMoveRight) || (!collided() && speedx < 0 && canMoveLeft) ) {
 			x += speedx;
-		}else if (!collided() && speedx < 0 && canMoveLeft){
-			x += speedx;
-		}else{
-			speedx = 0;
-			MyBg.bgSpeedx = 0;
 		}
+//			else{
+//			stopMovingHorizontally();
+//		}
 	}
 
 	public boolean collided() {
@@ -74,20 +72,27 @@ public class MyPlayer {
 				// System.out.println("Got into Collision loop " +
 				// myOwn.myTileMapper.tileBounder[row].length + " " + row);
 
-					String collisionSide = whichSidecollided(myPlayerBoundRect,
-							myOwn.myTileMapper.tileBounder[row][column]);
-				 System.out.println(collisionSide);
-
-					if (collisionSide == null) {
-						canMoveRight = true;
-						canMoveLeft = true;
-					} else if (collisionSide == "left") {
-						canMoveRight = true;
+//					String collisionSide = whichSidecollided(direction, myPlayerBoundRect,
+//							myOwn.myTileMapper.tileBounder[row][column]);
+//				 System.out.println(collisionSide);
+//
+//					if (collisionSide == null) {
+//						canMoveRight = true;
+//						canMoveLeft = true;
+//					} else if (collisionSide == "left") {
+//						canMoveRight = true;
+//						canMoveLeft = false;
+//						return true;
+//					}else if(collisionSide == "right"){
+//						canMoveRight = false;
+//						canMoveLeft = true;
+//						return true;
+//					}
+//					
+					if(myPlayerBoundRect.intersects(myOwn.myTileMapper.tileBounder[row][column])){
 						canMoveLeft = false;
-						return true;
-					}else if(collisionSide == "right"){
 						canMoveRight = false;
-						canMoveLeft = true;
+						System.out.println(canMoveLeft + " " + canMoveRight);
 						return true;
 					}
 					
@@ -112,8 +117,10 @@ public class MyPlayer {
 				rect.x + rect.width, rect.y + rect.height);
 		Line2D leftSide = new Line2D.Float(rect.x, rect.y, rect.x, rect.y
 				+ rect.height);
-		if (rightSide.intersects(rect2))
+		if (rightSide.intersects(rect2)){
+		
 			return "right";
+		}
 		else if (leftSide.intersects(rect2))
 			return "left";
 		else
