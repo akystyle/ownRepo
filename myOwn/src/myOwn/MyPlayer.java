@@ -58,25 +58,22 @@ public class MyPlayer {
 	}
 
 	private void movement() {
-		if (canMoveRight && speedx>0)
+		if ((canMoveRight && speedx > 0) || (canMoveLeft && speedx < 0))
 			x += speedx;
-		else
-		stopMovingHorizontally();
-		if(canMoveLeft && speedx<0)
-			x +=speedx;
 		else
 			stopMovingHorizontally();
 	}
 
 	public boolean collided() {
-		
+
 		for (int row = 0; row < myOwn.myTileMapper.tileBounder.length; row++) {
 			for (int column = 0; column < myOwn.myTileMapper.tileBounder[row].length; column++) {
 
-				if(myPlayerBoundRect.intersects(myOwn.myTileMapper.tileBounder[row][column])){
+				if (myPlayerBoundRect
+						.intersects(myOwn.myTileMapper.tileBounder[row][column])) {
 					String collisionSide = whichSidecollided(myPlayerBoundRect,
 							myOwn.myTileMapper.tileBounder[row][column]);
-				 System.out.println(collisionSide);
+//					System.out.println(x + 66 + " " + myOwn.myTileMapper.tileBounder[row][column].x);
 
 					if (collisionSide == null) {
 						canMoveRight = true;
@@ -86,14 +83,14 @@ public class MyPlayer {
 						canMoveLeft = false;
 						stopMovingHorizontally();
 						return true;
-					}else if(collisionSide == "right"){
+					} else if (collisionSide == "right") {
 						canMoveRight = false;
 						canMoveLeft = true;
 						stopMovingHorizontally();
 						return true;
 					}
 				}
-					
+
 				if (leftHandBoundRect
 						.intersects(myOwn.myTileMapper.tileBounder[row][column])) {
 					// System.out.println("Player Left Hand Collided");
@@ -111,11 +108,11 @@ public class MyPlayer {
 	}
 
 	private String whichSidecollided(Rectangle rect, Rectangle rect2) {
-		Line2D rightSide = new Line2D.Float(rect.x + rect.width, rect.y,
-				rect.x + rect.width, rect.y + rect.height);
+		Line2D rightSide = new Line2D.Float(rect.x + rect.width, rect.y, rect.x
+				+ rect.width, rect.y + rect.height);
 		Line2D leftSide = new Line2D.Float(rect.x, rect.y, rect.x, rect.y
 				+ rect.height);
-		
+
 		if (rightSide.intersects(rect2))
 			return "right";
 		else if (leftSide.intersects(rect2))
@@ -171,7 +168,7 @@ public class MyPlayer {
 			leftHandBoundRect.setRect(bodyBoundX, bodyBoundY + 13, 26, 18);
 			rightHandBoundRect
 					.setRect(bodyBoundX + 42, bodyBoundY + 13, 26, 18);
-			
+
 		} else {
 			bodyBoundHeight = 125;
 			bodyBoundWidth = 85;

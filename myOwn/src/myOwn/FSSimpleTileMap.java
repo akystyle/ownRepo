@@ -70,13 +70,15 @@ public class FSSimpleTileMap {
 
 	}
 
-	public void calculatePosition(int playerSpeedX) {
-		if (playerSpeedX > 0)
+	public void calculatePosition() {
+		int playerSpeedX = myOwn.myPlayer.getSpeedx();
+		//System.out.println(playerSpeedX +  " " + myOwn.myPlayer.isCanMoveRight());
+		if (playerSpeedX > 0 && myOwn.myPlayer.isCanMoveRight())
 			speedX = -4;
-		else if (playerSpeedX == 0)
-			speedX = playerSpeedX;
-		else
+		else if (playerSpeedX < 0 && myOwn.myPlayer.isCanMoveLeft())
 			speedX = 4;
+		else
+			speedX = 0;
 
 		for (int row = 0; row < ReadedMap.size(); row++) {
 			char[] tempChar = ReadedMap.get(row).toCharArray();

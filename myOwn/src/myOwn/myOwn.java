@@ -172,7 +172,7 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 			myPlayer.calculatePosition();
 			myCharacter = myPlayerAnimation.calculateFrame();
 			
-			myTileMapper.calculatePosition(myPlayer.getSpeedx());
+			myTileMapper.calculatePosition();
 			
 			//myTileMapper.calculatePosition(myPlayer.getSpeedx());
 			
@@ -331,7 +331,7 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 			}
 		}
 	}
-@SuppressWarnings("unused")
+//@SuppressWarnings("unused")
 private void drawPlayerBound(Graphics g){
 
 	g.drawRect(myPlayerBoundRect.x, myPlayerBoundRect.y, myPlayerBoundRect.width, myPlayerBoundRect.height);
