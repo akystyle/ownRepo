@@ -255,7 +255,6 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_DOWN:
 			myPlayer.moveDown();
-			myPlayer.setDucked(true);
 			break;
 		case KeyEvent.VK_UP:
 			myPlayer.moveUp();

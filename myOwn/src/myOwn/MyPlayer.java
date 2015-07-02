@@ -122,6 +122,7 @@ public class MyPlayer {
 	}
 
 	public void moveDown() {
+		ducked = true;
 	}
 
 	public void moveUp() {
@@ -143,7 +144,7 @@ public class MyPlayer {
 	}
 
 	public void jump() {
-		if (jumping == 0)
+		if (jumping == 0 && !collided())
 			jumping = 1;
 	}
 
