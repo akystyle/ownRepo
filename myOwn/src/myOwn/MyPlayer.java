@@ -27,6 +27,7 @@ public class MyPlayer {
 			if (x >= 380) {
 				x = 380;
 				MyBg.bgSpeedx = -2;
+				collided();
 				// System.out.println("Maximum Character Right limit");
 			} else {
 				// System.out.println("Should get here");
@@ -36,6 +37,7 @@ public class MyPlayer {
 			if (x <= 1) {
 				x = 1;
 				MyBg.bgSpeedx = 2;
+				collided();
 				// System.out.println("Minimum character left limit");
 			} else {
 				// System.out.println("Should get here");
@@ -58,53 +60,57 @@ public class MyPlayer {
 	}
 
 	private void movement() {
-		if ((canMoveRight && speedx > 0) || (canMoveLeft && speedx < 0))
+		collided();
+		if ((canMoveRight && speedx > 0) || (canMoveLeft && speedx < 0)){
+			//System.out.println(collission);
 			x += speedx;
+		}
 		else
 			stopMovingHorizontally();
 	}
 
-	public boolean collided() {
-
+	public String collided() {
 		for (int row = 0; row < myOwn.myTileMapper.tileBounder.length; row++) {
 			for (int column = 0; column < myOwn.myTileMapper.tileBounder[row].length; column++) {
 
 				if (myPlayerBoundRect
 						.intersects(myOwn.myTileMapper.tileBounder[row][column])) {
+					
 					String collisionSide = whichSidecollided(myPlayerBoundRect,
 							myOwn.myTileMapper.tileBounder[row][column]);
-//					System.out.println(x + 66 + " " + myOwn.myTileMapper.tileBounder[row][column].x);
 
 					if (collisionSide == null) {
 						canMoveRight = true;
 						canMoveLeft = true;
 					} else if (collisionSide == "left") {
+						System.out.println("Getting in left");
 						canMoveRight = true;
 						canMoveLeft = false;
 						stopMovingHorizontally();
-						return true;
+						return "left";
 					} else if (collisionSide == "right") {
+						System.out.println("Getting in Right");
 						canMoveRight = false;
 						canMoveLeft = true;
 						stopMovingHorizontally();
-						return true;
+						return "right";
 					}
 				}
 
 				if (leftHandBoundRect
 						.intersects(myOwn.myTileMapper.tileBounder[row][column])) {
 					// System.out.println("Player Left Hand Collided");
-					return true;
+					return "left";
 				}
 				if (rightHandBoundRect
 						.intersects(myOwn.myTileMapper.tileBounder[row][column])) {
 					// System.out.println("Player Right Hand Collided");
-					return true;
+					return "right";
 				}
 
 			}
 		}
-		return false;
+		return "null";
 	}
 
 	private String whichSidecollided(Rectangle rect, Rectangle rect2) {
@@ -130,21 +136,21 @@ public class MyPlayer {
 	}
 
 	public void moveLeft() {
-		if (canMoveLeft && !collided())
+		if (canMoveLeft)
 			speedx = -6;
 		else
 			speedx = 0;
 	}
 
 	public void moveRight() {
-		if (canMoveRight && !collided())
+		if (canMoveRight)
 			speedx = 6;
 		else
 			speedx = 0;
 	}
 
 	public void jump() {
-		if (jumping == 0 && !collided())
+		if (jumping == 0)
 			jumping = 1;
 	}
 
