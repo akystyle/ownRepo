@@ -83,16 +83,13 @@ public class MyPlayer {
 						canMoveRight = true;
 						canMoveLeft = true;
 					} else if (collisionSide == "left") {
-						System.out.println("Getting in left");
 						canMoveRight = true;
 						canMoveLeft = false;
-						stopMovingHorizontally();
 						return "left";
 					} else if (collisionSide == "right") {
 						System.out.println("Getting in Right");
 						canMoveRight = false;
 						canMoveLeft = true;
-						stopMovingHorizontally();
 						return "right";
 					}
 				}
@@ -119,12 +116,13 @@ public class MyPlayer {
 		Line2D leftSide = new Line2D.Float(rect.x, rect.y, rect.x, rect.y
 				+ rect.height);
 
-		if (rightSide.intersects(rect2))
+		if (rightSide.intersects(rect2)){
 			return "right";
-		else if (leftSide.intersects(rect2))
+		}else if (leftSide.intersects(rect2)){
 			return "left";
-		else
+		}else{
 			return null;
+		}
 	}
 
 	public void moveDown() {

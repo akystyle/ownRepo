@@ -231,7 +231,7 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 			g.drawImage(myCharacter, myPlayer.getX(), myPlayer.getY(),
 					this);
 		}
-		drawPlayerBound(g);												//For drawing tiles of the player collision detection bounds
+//		drawPlayerBound(g);												//For drawing tiles of the player collision detection bounds
 
 		// Enemy Drawings
 		if (checkBornForEachEnemy(heliBoy1)) {
@@ -326,11 +326,11 @@ public class myOwn extends Applet implements Runnable, KeyListener {
 					break;
 				}
 				g.drawImage(tempImage,tempList[row][column], myTileMapper.getY(),this);
-				g.drawRect(myTileMapper.getTileBounder()[row][column].x, myTileMapper.getTileBounder()[row][column].y, myTileMapper.getTileBounder()[row][column].width, myTileMapper.getTileBounder()[row][column].height);
+				//g.drawRect(myTileMapper.getTileBounder()[row][column].x, myTileMapper.getTileBounder()[row][column].y, myTileMapper.getTileBounder()[row][column].width, myTileMapper.getTileBounder()[row][column].height);
 			}
 		}
 	}
-//@SuppressWarnings("unused")
+@SuppressWarnings("unused")
 private void drawPlayerBound(Graphics g){
 
 	g.drawRect(myPlayerBoundRect.x, myPlayerBoundRect.y, myPlayerBoundRect.width, myPlayerBoundRect.height);
