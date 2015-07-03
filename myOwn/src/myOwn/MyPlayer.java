@@ -83,6 +83,7 @@ public class MyPlayer {
 						canMoveRight = true;
 						canMoveLeft = true;
 					} else if (collisionSide == "left") {
+						System.out.println("Getting in Left");
 						canMoveRight = true;
 						canMoveLeft = false;
 						return "left";
@@ -117,8 +118,10 @@ public class MyPlayer {
 				+ rect.height);
 
 		if (rightSide.intersects(rect2)){
+			x = (int) (x + (rightSide.getX1() - rect2.x));
 			return "right";
 		}else if (leftSide.intersects(rect2)){
+			x = (int) (x + (rect2.x + rect2.width - leftSide.getX1() ));
 			return "left";
 		}else{
 			return null;
@@ -134,16 +137,18 @@ public class MyPlayer {
 	}
 
 	public void moveLeft() {
-		if (canMoveLeft)
+		if (canMoveLeft){
 			speedx = -6;
-		else
+		canMoveRight = true;
+		}else
 			speedx = 0;
 	}
 
 	public void moveRight() {
-		if (canMoveRight)
+		if (canMoveRight){
 			speedx = 6;
-		else
+			canMoveLeft = true;
+		}else
 			speedx = 0;
 	}
 
