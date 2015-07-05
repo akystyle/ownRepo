@@ -23,28 +23,27 @@ public class MyPlayer {
 
 	public void calculatePosition() {
 
-		if (speedx > 0) {
+		String collission = collided();
+		if (speedx > 0 && collission == "null" && canMoveRight) {
 			if (x >= 380) {
 				x = 380;
 				MyBg.bgSpeedx = -2;
-				collided();
 				// System.out.println("Maximum Character Right limit");
 			} else {
 				// System.out.println("Should get here");
-				movement();
+				x += speedx;
 			}
-		} else if (speedx < 0) {
+		} else if (speedx < 0 && canMoveLeft && collission == "null") {
 			if (x <= 1) {
 				x = 1;
 				MyBg.bgSpeedx = 2;
-				collided();
 				// System.out.println("Minimum character left limit");
 			} else {
 				// System.out.println("Should get here");
-				movement();
+				x += speedx;
 			}
 		} else {
-			MyBg.bgSpeedx = 0;
+			stopMovingHorizontally();
 		}
 
 		if (jumping == 1) {
@@ -57,16 +56,6 @@ public class MyPlayer {
 				jumping = 0;
 		}
 		updateBodyBounder();
-	}
-
-	private void movement() {
-		collided();
-		if ((canMoveRight && speedx > 0) || (canMoveLeft && speedx < 0)){
-			//System.out.println(collission);
-			x += speedx;
-		}
-		else
-			stopMovingHorizontally();
 	}
 
 	public String collided() {
